@@ -1,0 +1,36 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Wall",
+      "-std=c++11",
+      "-I/usr/local/include",
+      "-Iinclude",
+      "-fsanitize=address",
+      "-c",
+      "-o",
+      "obj/main.o",
+      "src/main.cpp"
+    ],
+    "directory": "/Users/lewislee/Documents/Coding/3d_renderer",
+    "file": "/Users/lewislee/Documents/Coding/3d_renderer/src/main.cpp",
+    "output": "/Users/lewislee/Documents/Coding/3d_renderer/obj/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-Wall",
+      "-std=c++11",
+      "-I/usr/local/include",
+      "-Iinclude",
+      "-fsanitize=address",
+      "-c",
+      "-o",
+      "obj/SDLObject.o",
+      "src/SDLObject.cpp"
+    ],
+    "directory": "/Users/lewislee/Documents/Coding/3d_renderer",
+    "file": "/Users/lewislee/Documents/Coding/3d_renderer/src/SDLObject.cpp",
+    "output": "/Users/lewislee/Documents/Coding/3d_renderer/obj/SDLObject.o"
+  }
+]
