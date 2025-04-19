@@ -9,12 +9,13 @@
 
 class Sphere: public Object3D {
 public:
-	Sphere(const Vec3& center, const double& radius);
+	Sphere(const Vec3& center, const double& radius, shared_ptr<Material> mat);
 	bool hit(const Ray& r, Interval rayT, HitRecord& rec) const override;
 
 private:
-	Vec3	_center;
-	double		_radius;
+	Vec3						_center;
+	double						_radius;
+	std::shared_ptr<Material>	_mat;
 };
 
 #endif /* SPHERE_CLASS_HPP */

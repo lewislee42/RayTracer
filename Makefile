@@ -1,5 +1,5 @@
 SRC_DIR = src
-SRC_FILES = main.cpp SDLObject.cpp SDLTextureObject.cpp Ray.cpp Object3D.cpp Object3DList.cpp Sphere.cpp Interval.cpp Camera.cpp Vec3.cpp
+SRC_FILES = main.cpp SDLObject.cpp SDLTextureObject.cpp Ray.cpp Object3D.cpp Object3DList.cpp Sphere.cpp Interval.cpp Camera.cpp Vec3.cpp Material.cpp
 RASTER_FILES = utils.old.cpp SDLObject.cpp SDLTextureObject.cpp
 HEADER_DIR = include
 OBJ_DIR = obj

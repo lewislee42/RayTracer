@@ -1,6 +1,8 @@
 
 #include <Ray.hpp>
 
+Ray::Ray() {}
+
 Ray::Ray(const Vec3& origin, const Vec3& direction): _origin(origin), _direction(direction) {
 }
 

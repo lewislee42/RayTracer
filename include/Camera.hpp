@@ -6,6 +6,8 @@
 # include <Object3D.hpp>
 # include <Vec3.hpp>
 # include <Utils.hpp>
+# include <Material.hpp>
+# include <vector>
 
 class Camera {
 public:

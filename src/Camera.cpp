@@ -14,6 +14,7 @@ void Camera::render(const Object3D& world, SDLTextureObject& texture) {
 				Ray r = this->getRay(j, i);
 				color += this->rayColor(r, this->maxDepth, world);
 			}
+			/*std::cout << "color: " << color.x << ", " << color.y << ", " << color.z << std::endl;*/
 			texture.putPixel(j, i, this->_pixelSampleWeight * color);
 		}
 	}
@@ -49,19 +50,35 @@ void Camera::initialize() {
 Vec3 Camera::rayColor(const Ray& r, int depth, const Object3D& world) const {
 	HitRecord rec;
 	Vec3 color = {0, 0, 0};
+	std::vector<Vec3> attenuationList;
+	Ray currentRay = r;
 
-	if (depth <= 0)
-		return Vec3(0, 0, 0);
+	while (1) {
+		if (depth <= 0) {
+			return Vec3(0, 0, 0);
+		}
 
-	if (world.hit(r, Interval(0.001, infinity), rec)) {
-		Vec3 direction = randomOnHemisphere(rec.normal);
-		return 0.5 * this->rayColor(Ray(rec.p, direction), depth - 1, world);
+		if (world.hit(currentRay, Interval(0.001, infinity), rec)) {
+			Ray scattered;
+			Vec3 attenuation;
+			if (rec.mat->scatter(currentRay, rec, attenuation, scattered)) {
+				depth -= 1;
+				attenuationList.push_back(attenuation);
+				currentRay = scattered;
+				continue;
+			}
+			return Vec3(0, 0, 0);
+		}
+		Vec3 unitDirection = unitVector(r.getDirection());
+		double a = 0.5 * (unitDirection.y + 1.0);
+		color = (1.0 - a) * Vec3(1, 1, 1) + a * Vec3(0.5, 0.7, 1.0);
+
+		break;
 	}
-	Vec3 unitDirection = unit_vector(r.getDirection());
-
-	double a = 0.5 * (unitDirection.y + 1.0);
-
-	color = (1.0 - a) * Vec3(1, 1, 1) + a * Vec3(0.5, 0.7, 1.0);
+	while (attenuationList.size() != 0) {
+		color = attenuationList.back() * color;
+		attenuationList.pop_back();
+	}
 	return color;
 }
 

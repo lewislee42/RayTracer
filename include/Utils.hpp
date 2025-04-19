@@ -18,4 +18,10 @@ inline double degreesToRadians(double degrees) {
 	return degrees * pi / 180;
 }
 
+inline double linearToGamma(double linearComponent) {
+	if (linearComponent > 0)
+		return sqrt(linearComponent);
+	return 0;
+}
+
 #endif /* UTILS_HPP */

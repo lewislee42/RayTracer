@@ -1,7 +1,7 @@
 
 # include <Sphere.hpp>
 
-Sphere::Sphere(const Vec3& center, const double& radius): _center(center), _radius(radius) {
+Sphere::Sphere(const Vec3& center, const double& radius, shared_ptr<Material> mat): _center(center), _radius(std::fmax(0.0, radius)), _mat(mat) {
 }
 
 bool Sphere::hit(const Ray& r, Interval rayT, HitRecord& rec) const {
@@ -28,6 +28,8 @@ bool Sphere::hit(const Ray& r, Interval rayT, HitRecord& rec) const {
 
 	Vec3 outwardNormal = (rec.p - this->_center) / this->_radius;
 	rec.setFaceNormal(r, outwardNormal);
+
+	rec.mat = this->_mat;
 	
 	return true;
 }

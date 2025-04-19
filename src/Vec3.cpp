@@ -39,3 +39,8 @@ double Vec3::length() const {
 double Vec3::lengthSquared() const {
 	return x * x + y * y + z * z;
 }
+
+bool Vec3::nearZero() const {
+	double s = 1e-8;
+	return (std::fabs(x) < s) && (std::fabs(y) < s) && (std::fabs(z) < s);
+}

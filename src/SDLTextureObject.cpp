@@ -1,4 +1,5 @@
 #include "SDLTextureObject.hpp"
+#include "Utils.hpp"
 
 SDLTextureObject::SDLTextureObject(SDL_Renderer* renderer): _pixels(NULL), _width(0), _height(0) {
 	if (!SDL_GetRenderOutputSize(renderer, &this->_width, &this->_height)) {
@@ -47,10 +48,11 @@ void SDLTextureObject::putPixel(int x, int y, Vec3 color) {
 	if (color.x < 0 || color.y < 0 || color.z < 0)
 		return;
 
+	color.x = linearToGamma(color.x);
+	color.y = linearToGamma(color.y);
+	color.z = linearToGamma(color.z);
+
 	static const Interval intensity(0.0, 0.999);
-	/*color.x = sqrt(color.x);*/
-	/*color.y = sqrt(color.y);*/
-	/*color.z = sqrt(color.z);*/
 	color.x = int(256 * intensity.clamp(color.x));
 	color.y = int(256 * intensity.clamp(color.y));
 	color.z = int(256 * intensity.clamp(color.z));

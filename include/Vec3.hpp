@@ -18,8 +18,9 @@ class Vec3 {
     Vec3& operator*=(double t);
     Vec3& operator/=(double t);
 
-    double length() const;
-    double lengthSquared() const;
+    double	length() const;
+    double	lengthSquared() const;
+	bool	nearZero() const;
 };
 
 // point3 is just an alias for Vec3, but useful for geometric clarity in the code.
@@ -67,7 +68,7 @@ inline Vec3 cross(const Vec3& u, const Vec3& v) {
                 u.x * v.y - u.y * v.x);
 }
 
-inline Vec3 unit_vector(const Vec3& v) {
+inline Vec3 unitVector(const Vec3& v) {
     return v / v.length();
 }
 
@@ -101,6 +102,18 @@ inline Vec3 randomOnHemisphere(const Vec3& normal) {
 	if (dot(onUnitSphere, normal) > 0.0)
 		return onUnitSphere;
 	return -onUnitSphere;
+}
+
+inline Vec3 reflect(const Vec3& v, const Vec3& n) {
+	return v - 2 * dot(v, n) * n;
+}
+
+inline Vec3 refract(const Vec3&uv, const Vec3& n, double etaIOverEtat) {
+	double cosTheta = std::fmin(dot(-uv, n), 1.0);
+
+	Vec3 rOutPerp = etaIOverEtat * (uv + cosTheta * n);
+	Vec3 rOutPara = -std::sqrt(std::fabs(1.0 - rOutPerp.lengthSquared())) * n;
+	return rOutPerp + rOutPara;
 }
 
 #endif

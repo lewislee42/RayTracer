@@ -11,6 +11,7 @@ private:
 	Vec3 _direction;
 	
 public:
+	Ray();
 	Ray(const Vec3& origin, const Vec3& direction);
 	
 	const Vec3& getOrigin() const;
