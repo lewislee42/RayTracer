@@ -13,7 +13,7 @@ public:
 	Vec3						p;
 	Vec3						normal;
 	std::shared_ptr<Material>	mat;
-	double						t;
+	float						t;
 	bool						frontFace;
 
 	void setFaceNormal(const Ray& r, const Vec3& outwardNormal);

@@ -19,7 +19,7 @@ void Object3DList::add(shared_ptr<Object3D> object) {
 bool Object3DList::hit(const Ray& r, Interval rayT, HitRecord& rec) const {
 	HitRecord	tempRec;
 	bool		hitAnything = false;
-	double		closestSoFar = rayT.max;
+	float		closestSoFar = rayT.max;
 
 	for (const shared_ptr<Object3D>& object: this->objects) {
 		if (object->hit(r, Interval(rayT.min, closestSoFar), tempRec)) {

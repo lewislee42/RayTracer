@@ -6,20 +6,21 @@
 
 class Vec3 {
   public:
-    double x;
-    double y;
-    double z;
+	float x;
+    float y;
+    float z;
+
 
     Vec3();
-    Vec3(double x, double y, double z);
+    Vec3(float x, float y, float z);
 
     Vec3 operator-() const;
     Vec3& operator+=(const Vec3& v);
-    Vec3& operator*=(double t);
-    Vec3& operator/=(double t);
+    Vec3& operator*=(float t);
+    Vec3& operator/=(float t);
 
-    double	length() const;
-    double	lengthSquared() const;
+    float	length() const;
+    float	lengthSquared() const;
 	bool	nearZero() const;
 };
 
@@ -56,7 +57,7 @@ inline Vec3 operator/(const Vec3& v, double t) {
     return (1/t) * v;
 }
 
-inline double dot(const Vec3& u, const Vec3& v) {
+inline float dot(const Vec3& u, const Vec3& v) {
     return u.x * v.x
          + u.y * v.y
          + u.z * v.z;
@@ -72,11 +73,11 @@ inline Vec3 unitVector(const Vec3& v) {
     return v / v.length();
 }
 
-inline double randomDouble() {
+inline float randomDouble() {
 	return std::rand() / (RAND_MAX + 1.0);
 }
 
-inline double randomDouble(double min, double max) {
+inline float randomDouble(float min, float max) {
 	return min + (max - min) * randomDouble();
 }
 
@@ -84,14 +85,14 @@ inline Vec3 randomVector() {
 	return Vec3(randomDouble(), randomDouble(), randomDouble());
 }
 
-inline Vec3 randomVector(double min, double max) {
+inline Vec3 randomVector(float min, float max) {
 	return Vec3(randomDouble(min, max), randomDouble(min, max), randomDouble(min, max));
 }
 
 inline Vec3 randomUnitVector() {
 	while (true) {
 		Vec3 p = randomVector(-1, 1);
-		double lensq = p.lengthSquared();
+		float lensq = p.lengthSquared();
 		if (1e-160 < lensq && lensq <= 1)
 			return p / sqrt(lensq);
 	}
@@ -108,8 +109,8 @@ inline Vec3 reflect(const Vec3& v, const Vec3& n) {
 	return v - 2 * dot(v, n) * n;
 }
 
-inline Vec3 refract(const Vec3&uv, const Vec3& n, double etaIOverEtat) {
-	double cosTheta = std::fmin(dot(-uv, n), 1.0);
+inline Vec3 refract(const Vec3&uv, const Vec3& n, float etaIOverEtat) {
+	float cosTheta = std::fmin(dot(-uv, n), 1.0);
 
 	Vec3 rOutPerp = etaIOverEtat * (uv + cosTheta * n);
 	Vec3 rOutPara = -std::sqrt(std::fabs(1.0 - rOutPerp.lengthSquared())) * n;

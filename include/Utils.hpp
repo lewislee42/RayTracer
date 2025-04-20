@@ -11,14 +11,14 @@
 using std::make_shared;
 using std::shared_ptr;
 
-const double infinity = std::numeric_limits<double>::infinity();
-const double pi = 3.1415926535897932385;
+const float infinity = std::numeric_limits<float>::infinity();
+const float pi = 3.1415926535897932385;
 
-inline double degreesToRadians(double degrees) {
+inline float degreesToRadians(float degrees) {
 	return degrees * pi / 180;
 }
 
-inline double linearToGamma(double linearComponent) {
+inline float linearToGamma(float linearComponent) {
 	if (linearComponent > 0)
 		return sqrt(linearComponent);
 	return 0;

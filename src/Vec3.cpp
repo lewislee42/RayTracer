@@ -4,7 +4,7 @@
 // Constructors
 Vec3::Vec3(): x(0), y(0), z(0) {}
 
-Vec3::Vec3(double x, double y, double z): x(x), y(y), z(z) {}
+Vec3::Vec3(float x, float y, float z): x(x), y(y), z(z) {}
 
 
 // Operator overload
@@ -19,28 +19,28 @@ Vec3& Vec3::operator+=(const Vec3& v) {
 	return *this;
 }
 
-Vec3& Vec3::operator*=(double t) {
+Vec3& Vec3::operator*=(float t) {
 	x *= t;
 	y *= t;
 	z *= t;
 	return *this;
 }
 
-Vec3& Vec3::operator/=(double t) {
+Vec3& Vec3::operator/=(float t) {
 	return *this *= 1 / t;
 }
 
 
 // Member functions
-double Vec3::length() const {
+float Vec3::length() const {
 	return std::sqrt(lengthSquared());
 }
 
-double Vec3::lengthSquared() const {
+float Vec3::lengthSquared() const {
 	return x * x + y * y + z * z;
 }
 
 bool Vec3::nearZero() const {
-	double s = 1e-8;
+	float s = 1e-8;
 	return (std::fabs(x) < s) && (std::fabs(y) < s) && (std::fabs(z) < s);
 }

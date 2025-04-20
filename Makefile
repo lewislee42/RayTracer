@@ -10,8 +10,8 @@ OBJECTS = $(subst $(SRC_DIR),$(OBJ_DIR), $(SOURCES:.cpp=.o))
 RASTER_SOURCES = $(addprefix	$(SRC_DIR)/, $(RASTER_FILES))
 RASTER_OBJECTS = $(subst $(RASTER_FILES),$(OBJ_DIR), $(RASTER_SOURCES:.cpp=.o))
 COMPILER = clang++
-CXXFLAGS = -Wall -std=c++11 -I/usr/local/include -I$(HEADER_DIR) -fsanitize=address
-LINKERFLAGS = -L/usr/local/lib -Wl,-rpath,/usr/local/lib -lSDL3 
+CXXFLAGS = -std=c++17 -I/usr/local/include -I$(HEADER_DIR) -Ilibs/metal-cpp -fsanitize=address
+LINKERFLAGS = -L/usr/local/lib -Wl,-rpath,/usr/local/lib -lSDL3 -lstdc++ -framework AppKit -framework Metal -framework MetalKit -lobjc 
 
 all: $(TARGET)
 

@@ -6,20 +6,21 @@
 
 class Interval {
 public:
-	double min;
-	double max;
+	float min;
+	float max;
 
 	static const Interval empty;
 	static const Interval universe;
 
 
 	Interval();
-	Interval(const double& min, const double& max);
+	Interval(const float& min, const float& max);
 
-	double	size() const;
-	bool	contains(double x) const;
-	bool	surrounds(double x) const;
-	double	clamp(double x) const;
+	float	size() const;
+	bool	contains(float x) const;
+	bool	surrounds(float x) const;
+	float	clamp(float x) const;
+
 
 };
 

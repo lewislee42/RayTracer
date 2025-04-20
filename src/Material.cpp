@@ -25,7 +25,7 @@ bool Lambertian::scatter(const Ray& rIn, const HitRecord& rec, Vec3& attenuation
 
 
 // Metal
-Metal::Metal(const Vec3& albedo, double fuzz): _albedo(albedo), _fuzz(fuzz < 1 ? fuzz : 1) {}
+Metal::Metal(const Vec3& albedo, float fuzz): _albedo(albedo), _fuzz(fuzz < 1 ? fuzz : 1) {}
 
 bool Metal::scatter(const Ray& rIn, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const {
 	Vec3 reflected = reflect(rIn.getDirection(), rec.normal);
@@ -39,19 +39,19 @@ bool Metal::scatter(const Ray& rIn, const HitRecord& rec, Vec3& attenuation, Ray
 
 
 // Dielectric
-Dielectric::Dielectric(double refractionIndex): _refractionIndex(refractionIndex) {}
+Dielectric::Dielectric(float refractionIndex): _refractionIndex(refractionIndex) {}
 
 bool Dielectric::scatter(const Ray& rIn, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const {
 	attenuation = Vec3(1.0, 1.0, 1.0);
-	double ri;
+	float ri;
 	if (rec.frontFace)
 		ri = 1.0 / this->_refractionIndex;
 	else
 		ri = this->_refractionIndex;
 
 	Vec3 unitDirection = unitVector(rIn.getDirection());
-	double cosTheta = std::fmin(dot(-unitDirection, rec.normal), 1.0);
-	double sinTheta = std::sqrt(1.0 - cosTheta * cosTheta);
+	float cosTheta = std::fmin(dot(-unitDirection, rec.normal), 1.0);
+	float sinTheta = std::sqrt(1.0 - cosTheta * cosTheta);
 
 	bool cannotRefract = ri * sinTheta > 1.0;
 	Vec3 direction;

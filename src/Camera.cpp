@@ -1,4 +1,5 @@
 
+#include "Utils.hpp"
 # include <Camera.hpp>
 
 void Camera::render(const Object3D& world, SDLTextureObject& texture) {
@@ -27,21 +28,28 @@ void Camera::initialize() {
 		this->_imageH = 1;
 
 	this->_pixelSampleWeight = 1.0 / this->samplePerPixel;
-	this->_center = {0, 0, 0};
+	this->_center = this->lookFrom;
 
+	// Calculating the viewport dimensions
 	float focalLength = 1.0;
-	float viewportH = 2.0;
-	float viewportW = viewportH * (double(this->imageW) / this->_imageH);
+	float theta = degreesToRadians(this->fov);
+	float h = std::tan(theta / 2);
+	float viewportH = 2.0 * h * focalLength;
+	float viewportW = viewportH * (float(this->imageW) / this->_imageH);
 
-	Vec3 viewportU = {viewportW, 0, 0};
-	Vec3 viewportV = {0, -viewportH, 0};
+	this->_w = unitVector(this->lookFrom - this->lookAt);
+	this->_u = unitVector(cross(vup, this->_w));
+	this->_v = cross(this->_w, this->_u);
+
+	Vec3 viewportU = viewportW * this->_u;
+	Vec3 viewportV = viewportH * -this->_v;
 
 	this->_pixelDeltaU = viewportU / this->imageW;
 	this->_pixelDeltaV = viewportV / this->_imageH;
 
 	Vec3 viewportUpperLeft =
 		this->_center
-		- Vec3(0, 0, focalLength)
+		- (focalLength * this->_w) 
 		- viewportU / 2 
 		- viewportV / 2;
 	this->_pixel00Loc = viewportUpperLeft + 0.5 * (this->_pixelDeltaU + this->_pixelDeltaV);
@@ -50,7 +58,7 @@ void Camera::initialize() {
 Vec3 Camera::rayColor(const Ray& r, int depth, const Object3D& world) const {
 	HitRecord rec;
 	Vec3 color = {0, 0, 0};
-	std::vector<Vec3> attenuationList;
+	Vec3 attenuationList = {1, 1, 1};
 	Ray currentRay = r;
 
 	while (1) {
@@ -63,23 +71,19 @@ Vec3 Camera::rayColor(const Ray& r, int depth, const Object3D& world) const {
 			Vec3 attenuation;
 			if (rec.mat->scatter(currentRay, rec, attenuation, scattered)) {
 				depth -= 1;
-				attenuationList.push_back(attenuation);
+				attenuationList = attenuation * attenuationList;
 				currentRay = scattered;
 				continue;
 			}
 			return Vec3(0, 0, 0);
 		}
 		Vec3 unitDirection = unitVector(r.getDirection());
-		double a = 0.5 * (unitDirection.y + 1.0);
+		float a = 0.5 * (unitDirection.y + 1.0);
 		color = (1.0 - a) * Vec3(1, 1, 1) + a * Vec3(0.5, 0.7, 1.0);
 
 		break;
 	}
-	while (attenuationList.size() != 0) {
-		color = attenuationList.back() * color;
-		attenuationList.pop_back();
-	}
-	return color;
+	return color * attenuationList;
 }
 
 Ray Camera::getRay(int x, int y) const {
@@ -100,3 +104,6 @@ Vec3 Camera::sampleSquare() const {
 int Camera::getHeight() const {
 	return this->_imageH;
 }
+
+
+

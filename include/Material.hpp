@@ -25,24 +25,24 @@ private:
 
 class Metal: public Material {
 public:
-	Metal(const Vec3& albedo, double fuzz);
+	Metal(const Vec3& albedo, float fuzz);
 
 	bool scatter(const Ray& rIn, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const override;
 
 private:
 	Vec3	_albedo;
-	double	_fuzz;
+	float	_fuzz;
 };
 
 
 class Dielectric: public Material {
 public:
-	Dielectric(double refractionIndex);
+	Dielectric(float refractionIndex);
 
 	bool scatter(const Ray& rIn, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const override;
 
 private:
-	double	_refractionIndex;
+	float	_refractionIndex;
 };
 
 #endif /* MATERIAL_ABSTRACT_CLASS_HPP */

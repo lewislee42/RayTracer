@@ -7,22 +7,22 @@ const Interval Interval::universe = Interval(-infinity, +infinity);
 Interval::Interval(): min(+infinity), max(-infinity) {
 }
 
-Interval::Interval(const double& min, const double& max): min(min), max(max) {
+Interval::Interval(const float& min, const float& max): min(min), max(max) {
 }
 
-double	Interval::size() const {
+float	Interval::size() const {
 	return this->max - this->min;
 }
 
-bool	Interval::contains(double x) const {
+bool	Interval::contains(float x) const {
 	return (this->min <= x && x <= this->max);
 }
 
-bool	Interval::surrounds(double x) const {
+bool	Interval::surrounds(float x) const {
 	return (this->min < x && x < this->max);
 }
 
-double	Interval::clamp(double x) const {
+float	Interval::clamp(float x) const {
 	if (x < min)
 		return min;
 	if (x > max)
