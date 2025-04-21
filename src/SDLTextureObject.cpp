@@ -52,10 +52,9 @@ void SDLTextureObject::putPixel(int x, int y, Vec3 color) {
 	color.y = linearToGamma(color.y);
 	color.z = linearToGamma(color.z);
 
-	static const Interval intensity(0.0, 0.999);
-	color.x = int(256 * intensity.clamp(color.x));
-	color.y = int(256 * intensity.clamp(color.y));
-	color.z = int(256 * intensity.clamp(color.z));
+	color.x = int(256 * clamp(color.x, 0.0, 0.999));
+	color.y = int(256 * clamp(color.y, 0.0, 0.999));
+	color.z = int(256 * clamp(color.z, 0.0, 0.999));
 
 	/*color *= 255.999;*/
 	

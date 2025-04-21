@@ -1,8 +1,10 @@
 
 #include "Utils.hpp"
 # include <Camera.hpp>
+# include <Material.hpp>
+# include <Object3D.hpp>
 
-void Camera::render(const Object3D& world, SDLTextureObject& texture) {
+void Camera::render(const std::vector<Object3D> world, SDLTextureObject& texture) {
 	this->initialize();
 
 	/*std::cout << "Pixels: " << this->imageW << " x " << this->_imageH << "\n";*/
@@ -13,7 +15,7 @@ void Camera::render(const Object3D& world, SDLTextureObject& texture) {
 			Vec3 color = {0, 0, 0};
 			for (int sample = 0; sample < this->samplePerPixel; sample++) {
 				Ray r = this->getRay(j, i);
-				color += this->rayColor(r, this->maxDepth, world);
+				color = color + this->rayColor(r, this->maxDepth, world, world.size());
 			}
 			/*std::cout << "color: " << color.x << ", " << color.y << ", " << color.z << std::endl;*/
 			texture.putPixel(j, i, this->_pixelSampleWeight * color);
@@ -42,7 +44,7 @@ void Camera::initialize() {
 	this->_v = cross(this->_w, this->_u);
 
 	Vec3 viewportU = viewportW * this->_u;
-	Vec3 viewportV = viewportH * -this->_v;
+	Vec3 viewportV = viewportH * this->_v * -1;
 
 	this->_pixelDeltaU = viewportU / this->imageW;
 	this->_pixelDeltaV = viewportV / this->_imageH;
@@ -55,7 +57,25 @@ void Camera::initialize() {
 	this->_pixel00Loc = viewportUpperLeft + 0.5 * (this->_pixelDeltaU + this->_pixelDeltaV);
 }
 
-Vec3 Camera::rayColor(const Ray& r, int depth, const Object3D& world) const {
+bool gotHit(const Ray& r, const Interval rayT, HitRecord* rec, const std::vector<Object3D>& objects, const int objectAmount) {
+    HitRecord	tempRec;
+    bool		hitAnything		= false;
+    float		closestSoFar	= rayT.max;
+
+
+    for (int i = 0; i < objectAmount; i++) {
+        Interval tempInterval = (Interval){rayT.min, closestSoFar};
+        if (hit(objects[i], r, tempInterval, &tempRec)) {
+            hitAnything = true;
+            closestSoFar = tempRec.t;
+            *rec = tempRec;
+        }
+    }
+
+    return hitAnything;
+}
+
+Vec3 Camera::rayColor(const Ray& r, int depth, const std::vector<Object3D>& world, const int& objectAmount) const {
 	HitRecord rec;
 	Vec3 color = {0, 0, 0};
 	Vec3 attenuationList = {1, 1, 1};
@@ -63,26 +83,27 @@ Vec3 Camera::rayColor(const Ray& r, int depth, const Object3D& world) const {
 
 	while (1) {
 		if (depth <= 0) {
-			return Vec3(0, 0, 0);
+			return (Vec3){0, 0, 0};
 		}
 
-		if (world.hit(currentRay, Interval(0.001, infinity), rec)) {
+		if (gotHit(currentRay, (Interval){0.001, infinity}, &rec, world, world.size())) {
 			Ray scattered;
-			Vec3 attenuation;
-			if (rec.mat->scatter(currentRay, rec, attenuation, scattered)) {
+			Vec3 attenuation = (Vec3){0,0,0};
+			if (scatter(rec.mat, currentRay, rec, &attenuation, &scattered)) {
 				depth -= 1;
 				attenuationList = attenuation * attenuationList;
 				currentRay = scattered;
 				continue;
 			}
-			return Vec3(0, 0, 0);
+			return (Vec3){0, 0, 0};
 		}
-		Vec3 unitDirection = unitVector(r.getDirection());
+		Vec3 unitDirection = unitVector(r.direction);
 		float a = 0.5 * (unitDirection.y + 1.0);
-		color = (1.0 - a) * Vec3(1, 1, 1) + a * Vec3(0.5, 0.7, 1.0);
+		color = (1.0 - a) * (Vec3){1, 1, 1} + a * (Vec3){0.5, 0.7, 1.0};
 
 		break;
 	}
+	std::cout << "attenuation: " << attenuationList << " color: " << color << std::endl;
 	return color * attenuationList;
 }
 
@@ -94,11 +115,11 @@ Ray Camera::getRay(int x, int y) const {
 	Vec3 rayOrigin = this->_center;
 	Vec3 rayDirection = pixelSample - rayOrigin;
 
-	return Ray(rayOrigin, rayDirection);
+	return (Ray){rayOrigin, rayDirection};
 }
 
 Vec3 Camera::sampleSquare() const {
-	return Vec3(randomDouble() - 0.5, randomDouble() - 0.5, 0);
+	return (Vec3){randomDouble() - 0.5f, randomDouble() - 0.5f, 0};
 }
 
 int Camera::getHeight() const {

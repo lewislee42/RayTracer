@@ -16,11 +16,11 @@ public:
 	int		samplePerPixel	= 10;
 	int		maxDepth		= 10;
 	double	fov				= 90;
-	Vec3	lookFrom		= Vec3(0, 0, 0);
-	Vec3	lookAt			= Vec3(0, 0, -1);
-	Vec3	vup				= Vec3(0, 1, 0); // Camera relative "up" direction
+	Vec3	lookFrom		= (Vec3){0, 0, 0};
+	Vec3	lookAt			= (Vec3){0, 0, -1};
+	Vec3	vup				= (Vec3){0, 1, 0}; // Camera relative "up" direction
 
-	void	render(const Object3D& world, SDLTextureObject& texture);
+	void	render(const std::vector<Object3D> world, SDLTextureObject& texture);
 	int		getHeight() const;
 
 private:
@@ -35,7 +35,7 @@ private:
 	Vec3	_w;
 
 	void	initialize();
-	Vec3	rayColor(const Ray& r, int depth, const Object3D& world) const;
+	Vec3	rayColor(const Ray& r, int depth, const std::vector<Object3D>& world, const int& objectAmount) const;
 	Vec3	sampleSquare() const;
 	Ray		getRay(int i, int j) const;
 };

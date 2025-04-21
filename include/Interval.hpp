@@ -4,25 +4,14 @@
 
 # include <Utils.hpp>
 
-class Interval {
-public:
+typedef struct Interval {
 	float min;
 	float max;
+}	Interval;
 
-	static const Interval empty;
-	static const Interval universe;
-
-
-	Interval();
-	Interval(const float& min, const float& max);
-
-	float	size() const;
-	bool	contains(float x) const;
-	bool	surrounds(float x) const;
-	float	clamp(float x) const;
-
-
-};
-
+float	size();
+bool	contains(float x);
+bool	surrounds(float x);
+float	clamp(float x, float min, float max);
 
 #endif /* INTERVAL_CLASS_HPP */

@@ -1,28 +1,21 @@
 
 # include <Interval.hpp>
 
-const Interval Interval::empty = Interval(+infinity, -infinity);
-const Interval Interval::universe = Interval(-infinity, +infinity);
 
-Interval::Interval(): min(+infinity), max(-infinity) {
+
+float	size(float max, float min) {
+	return max - min;
 }
 
-Interval::Interval(const float& min, const float& max): min(min), max(max) {
+bool	contains(float x, float max, float min) {
+	return (min <= x && x <= max);
 }
 
-float	Interval::size() const {
-	return this->max - this->min;
+bool	surrounds(float x, float max, float min) {
+	return (min < x && x < max);
 }
 
-bool	Interval::contains(float x) const {
-	return (this->min <= x && x <= this->max);
-}
-
-bool	Interval::surrounds(float x) const {
-	return (this->min < x && x < this->max);
-}
-
-float	Interval::clamp(float x) const {
+float	clamp(float x, float max, float min) {
 	if (x < min)
 		return min;
 	if (x > max)

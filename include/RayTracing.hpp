@@ -10,8 +10,6 @@
 # include <Camera.hpp>
 
 # include <Object3D.hpp>
-# include <Object3DList.hpp>
-# include <Sphere.hpp>
 
 # include <Utils.hpp>
 

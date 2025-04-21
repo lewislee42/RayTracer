@@ -2,47 +2,34 @@
 #ifndef MATERIAL_ABSTRACT_CLASS_HPP
 # define MATERIAL_ABSTRACT_CLASS_HPP
 
-#include <Object3D.hpp>
+# include <Vec3.hpp>
+# include <Ray.hpp>
 
-class Material {
-public:
-	virtual ~Material() = default;
+typedef enum MaterialType {
+	LAMBERTIAN	= 0,
+	METAL		= 1,
+	DIELECTRIC	= 2
+}	MaterialType;
 
-	virtual bool scatter(const Ray& rIn, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const;
-};
+typedef struct Material {
+	MaterialType	type;
+	Vec3			albedo;
+	float			fuzz;
+	float			refractionIndex;
+}	Material;
 
+typedef struct HitRecord {
+	Vec3			p;
+	Vec3			normal;
+	struct Material	mat;
+	float			t;
+	bool			frontFace;
+}	HitRecord;
 
-class Lambertian: public Material {
-public:
-	Lambertian(const Vec3& albedo);
-
-	bool scatter(const Ray& rIn, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const override;
-
-private:
-	Vec3 _albedo;
-};
-
-
-class Metal: public Material {
-public:
-	Metal(const Vec3& albedo, float fuzz);
-
-	bool scatter(const Ray& rIn, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const override;
-
-private:
-	Vec3	_albedo;
-	float	_fuzz;
-};
-
-
-class Dielectric: public Material {
-public:
-	Dielectric(float refractionIndex);
-
-	bool scatter(const Ray& rIn, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const override;
-
-private:
-	float	_refractionIndex;
-};
+void setFaceNormal(HitRecord* hitRecord, const Ray&r, const Vec3& outwardNormal);
+bool scatterLambertian(const Material& mat, const Ray& rIn, const HitRecord& rec, Vec3* attenuation, Ray* scattered);
+bool scatterMetal(const Material& mat, const Ray& rIn, const HitRecord& rec, Vec3* attenuation, Ray* scattered);
+bool scatterDielectric(const Material& mat, const Ray& rIn, const HitRecord& rec, Vec3* attenuation, Ray* scattered);
+bool scatter(const Material& obj, const Ray& rIn, const HitRecord& rec, Vec3* attenuation, Ray* scattered);
 
 #endif /* MATERIAL_ABSTRACT_CLASS_HPP */

@@ -4,26 +4,17 @@
 
 # include <Ray.hpp>
 # include <Vec3.hpp>
+# include <Material.hpp>
 # include <Interval.hpp>
 
-class Material;
 
-class HitRecord {
-public:
-	Vec3						p;
-	Vec3						normal;
-	std::shared_ptr<Material>	mat;
-	float						t;
-	bool						frontFace;
+// only supports sphere for now
+typedef struct Object3D {
+	Vec3			center;
+	float			radius;
+	struct Material	mat;
+}	Object3D;
 
-	void setFaceNormal(const Ray& r, const Vec3& outwardNormal);
-};
-
-class Object3D {
-public:
-	virtual ~Object3D() = default;
-
-	virtual bool hit(const Ray& r, Interval rayT, HitRecord& rec) const = 0;
-};
+bool hit(const Object3D& obj, const Ray& r, Interval rayT, HitRecord* rec);
 
 #endif /* OBJECT3D_ABSTRACT_CLASS_HPP */
