@@ -10,7 +10,6 @@ class Vec3 {
     float y;
     float z;
 
-
     Vec3();
     Vec3(float x, float y, float z);
 
@@ -93,7 +92,7 @@ inline Vec3 randomUnitVector() {
 	while (true) {
 		Vec3 p = randomVector(-1, 1);
 		float lensq = p.lengthSquared();
-		if (1e-160 < lensq && lensq <= 1)
+		if (0 < lensq && lensq <= 1)
 			return p / sqrt(lensq);
 	}
 }

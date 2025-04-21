@@ -103,37 +103,53 @@ inline Vec3 randomUnitVector() {
 	}
 }
 
+inline bool nearZero(Vec3 v) {
+	float s = 1e-8;
+	return (std::fabs(v.x) < s) && (std::fabs(v.y) < s) && (std::fabs(v.z) < s);
+}
+
+inline Vec3 reflect(const Vec3 v, const Vec3 n) {
+	return v - 2 * dot(v, n) * n;
+}
+
+inline Vec3 refract(const Vec3 uv, const Vec3& n, float etaIOverEtat) {
+	float cosTheta = std::fmin(dot(-uv, n), 1.0);
+
+	Vec3 rOutPerp = etaIOverEtat * (uv + cosTheta * n);
+	Vec3 rOutPara = -std::sqrt(std::fabs(1.0 - lengthSquared(rOutPerp))) * n;
+	return rOutPerp + rOutPara;
+}
 
 
-bool scatterLambertian(const Ray& rIn, const HitRecord& rec, Vec3& attenuation, Ray& scattered) {
+bool scatterLambertian(const Material mat, const Ray rIn, const HitRecord rec, Vec3 attenuation, Ray scattered) {
 	Vec3 scatterDirection = rec.normal + randomUnitVector();
 
-	if (scatterDirection.nearZero())
+	if (nearZero(scatterDirection))
 		scatterDirection = rec.normal;
 
-	scattered = Ray(rec.p, scatterDirection);
-	attenuation = this->_albedo;
+	scattered = (Ray){rec.p, scatterDirection};
+	attenuation = mat.albedo;
 	return true;
 }
 
 // Metal
-bool scatterMetal(const Ray& rIn, const HitRecord& rec, Vec3& attenuation, Ray& scattered) {
-	Vec3 reflected = reflect(rIn.getDirection(), rec.normal);
-	reflected = unitVector(reflected) + (this->_fuzz * randomUnitVector());
-	scattered = Ray(rec.p, reflected);
-	attenuation = this->_albedo;
+bool scatterMetal(const Material mat, const Ray rIn, const HitRecord rec, Vec3 attenuation, Ray scattered) {
+	Vec3 reflected = reflect(rIn.direction, rec.normal);
+	reflected = unitVector(reflected) + (mat.fuzz * randomUnitVector());
+	scattered = (Ray){rec.p, reflected};
+	attenuation = mat.albedo;
 
-	return (dot(scattered.getDirection(), rec.normal) > 0);
+	return (dot(scattered.direction, rec.normal) > 0);
 }
 
 // Dielectric
-bool scatterDielectric(const Ray& rIn, const HitRecord& rec, Vec3& attenuation, Ray& scattered) {
+bool scatterDielectric(const Material mat, const Ray rIn, const HitRecord rec, Vec3 attenuation, Ray scattered) {
 	attenuation = (Vec3){1.0, 1.0, 1.0};
 	double ri;
 	if (rec.frontFace)
-		ri = 1.0 / this->_refractionIndex;
+		ri = 1.0 / mat.refractionIndex;
 	else
-		ri = this->_refractionIndex;
+		ri = mat.refractionIndex;
 
 	Vec3 unitDirection = unitVector(rIn.direction);
 	double cosTheta = std::fmin(dot(-unitDirection, rec.normal), 1.0);
@@ -148,13 +164,13 @@ bool scatterDielectric(const Ray& rIn, const HitRecord& rec, Vec3& attenuation, 
 		direction = refract(unitDirection, rec.normal, ri);
 		
 
-	scattered = Ray(rec.p, direction);
+	scattered = (Ray){rec.p, direction};
 	return true;
 }
 
 
 // Raytracing part
-bool hit(const Object3D object, const Ray& r, Interval rayT, HitRecord& rec) {
+bool hit(const Object3D object, const Ray r, Interval rayT, HitRecord& rec) {
 	Vec3 oc = object.center - r.origin;
 	double a = lengthSquared(r.direction);
 	double b = dot(r.direction, oc);
