@@ -103,7 +103,7 @@ Vec3 Camera::rayColor(const Ray& r, int depth, const std::vector<Object3D>& worl
 
 		break;
 	}
-	std::cout << "attenuation: " << attenuationList << " color: " << color << std::endl;
+	/*std::cout << "attenuation: " << attenuationList << " color: " << color << std::endl;*/
 	return color * attenuationList;
 }
 

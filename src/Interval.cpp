@@ -15,7 +15,7 @@ bool	surrounds(float x, float max, float min) {
 	return (min < x && x < max);
 }
 
-float	clamp(float x, float max, float min) {
+float	clamp(float x, float min, float max) {
 	if (x < min)
 		return min;
 	if (x > max)
