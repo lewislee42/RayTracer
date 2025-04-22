@@ -15,9 +15,9 @@ int main(int argc, char *argv[]) {
 
 	Camera cam;
 	cam.aspectRatio = 16.0 / 9;
-	cam.imageW = 400;
-	cam.samplePerPixel = 100;
-	cam.maxDepth = 20;
+	cam.imageW = 800;
+	cam.samplePerPixel = 500;
+	cam.maxDepth = 50;
 	cam.fov = 90;
 	cam.lookFrom = (Vec3){0, 0, 0.4};
 	cam.lookAt = (Vec3){0, 0, 0};

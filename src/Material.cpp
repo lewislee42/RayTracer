@@ -13,7 +13,8 @@ void setFaceNormal(HitRecord* hitRecord, const Ray&r, const Vec3& outwardNormal)
 
 // Lambertian
 bool scatterLambertian(const Material& mat, const Ray& rIn, const HitRecord& rec, Vec3* attenuation, Ray* scattered) {
-    Vec3 scatterDirection = rec.normal + randomUnitVector();
+	/*std::cout << "dount: " << rec.p << std::endl;*/
+    Vec3 scatterDirection = rec.normal + randomUnitVector(rIn.direction);
 
     if (nearZero(scatterDirection))
         scatterDirection = rec.normal;
@@ -26,7 +27,7 @@ bool scatterLambertian(const Material& mat, const Ray& rIn, const HitRecord& rec
 // Metal
 bool scatterMetal(const Material& mat, const Ray& rIn, const HitRecord& rec, Vec3* attenuation, Ray* scattered) {
     Vec3 reflected = reflect(rIn.direction, rec.normal);
-    reflected = unitVector(reflected) + (mat.fuzz * randomUnitVector());
+    reflected = unitVector(reflected) + (mat.fuzz * randomUnitVector(rIn.direction));
     *scattered = (Ray){rec.p, reflected};
     *attenuation = mat.albedo;
 

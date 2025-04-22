@@ -1,7 +1,9 @@
 #ifndef VEC3_CLASS_HPP
 #define VEC3_CLASS_HPP
 
+#include <cfloat>
 #include <cmath>
+# include <limits>
 #include <cstdint>
 #include <iostream>
 #include <simd/simd.h>
@@ -76,30 +78,75 @@ inline Vec3 unitVector(const Vec3& v) {
     return v / length(v);
 }
 
+inline unsigned TausStep(const unsigned z, const int s1, const int s2, const int s3, const unsigned M) {
+    unsigned b=(((z << s1) ^ z) >> s2);
+    return (((z & M) << s3) ^ b);
+}
+
 inline float randomDouble() {
 	return std::rand() / (RAND_MAX + 1.0);
 }
 
-inline float randomDouble(float min, float max) {
-	return min + (max - min) * randomDouble();
+inline float randomDouble(float min, float max, Vec3 v) {
+
+	unsigned seed = v.x * 1099087573UL;
+	unsigned z1 = TausStep(seed,13,19,12,429496729UL);
+	unsigned z2 = TausStep(seed,2,25,4,4294967288UL);
+	unsigned z3 = TausStep(seed,3,11,17,429496280UL);
+	unsigned z4 = (1664525*seed + 1013904223UL);
+
+	return min + (max - min) * ((z1^z2^z3^z4) * 2.3283064365387e-10);
 }
 
 inline Vec3 randomVector() {
 	return (Vec3){randomDouble(), randomDouble(), randomDouble()};
 }
 
-inline Vec3 randomVector(float min, float max) {
-	return (Vec3){randomDouble(min, max), randomDouble(min, max), randomDouble(min, max)};
+inline Vec3 randomVector(float min, float max, Vec3 v) {
+
+	if (v.x < 0)
+		v.x *= -1;
+	if (v.y < 0)
+		v.y *= -1;
+	if (v.z < 0)
+		v.z *= -1;
+
+	unsigned seed = (v.x) * 1099087573UL;
+	unsigned seedb = (v.y) * 1099087573UL;
+	unsigned seedc = (v.z) * 1099087573UL;
+	unsigned z1 = TausStep(seed,13,19,12,429496729UL);
+	unsigned z2 = TausStep(seed,2,25,4,4294967288UL);
+	unsigned z3 = TausStep(seed,3,11,17,429496280UL);
+	unsigned z4 = (1664525*seed + 1013904223UL);
+
+	unsigned r1 = (z1^z2^z3^z4^seedb);
+	   z1 = TausStep(r1,13,19,12,429496729UL);
+	   z2 = TausStep(r1,2,25,4,4294967288UL);
+	   z3 = TausStep(r1,3,11,17,429496280UL);
+	   z4 = (1664525*r1 + 1013904223UL);
+
+	unsigned r2 = (z1^z2^z3^z4^seedc);
+	   z1 = TausStep(r2,13,19,12,429496729UL);
+	   z2 = TausStep(r2,2,25,4,4294967288UL);
+	   z3 = TausStep(r2,3,11,17,429496280UL);
+	   z4 = (1664525*r2 + 1013904223UL);
+
+	unsigned r3 = (z1^z2^z3^z4^seedb);
+
+	float fr1 = min + (max - min) * (r1 * 2.3283064365387e-10);
+	float fr2 = min + (max - min) * (r2 * 2.3283064365387e-10);
+	float fr3 = min + (max - min) * (r3 * 2.3283064365387e-10);
+
+	return (Vec3){float(fr1), float(fr2), float(fr3)};
 }
 
-inline Vec3 randomUnitVector() {
-	Vec3 seedVec;
+inline Vec3 randomUnitVector(Vec3 v) {
+	Vec3 seedVec = v;
 	while (true) {
-		seedVec = randomVector(-1, 1);
+		seedVec = randomVector(-1, 1, seedVec);
 		float lensq = lengthSquared(seedVec);
 		if (0 < lensq && lensq <= 1) {
-			std::cout << "returned vec: " << seedVec / sqrt(lensq) << std::endl;
-			return seedVec;
+			return seedVec / sqrt(lensq);
 		}
 		if (seedVec.x < 0)
 			seedVec.x *= -1;
@@ -111,7 +158,7 @@ inline Vec3 randomUnitVector() {
 }
 
 inline Vec3 randomOnHemisphere(const Vec3& normal) {
-	Vec3 onUnitSphere = randomUnitVector();
+	Vec3 onUnitSphere = randomUnitVector(normal);
 	if (dot(onUnitSphere, normal) > 0.0)
 		return onUnitSphere;
 	return onUnitSphere * -1;
