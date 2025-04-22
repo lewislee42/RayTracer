@@ -2,7 +2,10 @@
 #define VEC3_CLASS_HPP
 
 #include <cmath>
+#include <cstdint>
 #include <iostream>
+#include <simd/simd.h>
+#include <Utils.hpp>
 
 typedef struct Vec3 {
 	float x;
@@ -90,11 +93,20 @@ inline Vec3 randomVector(float min, float max) {
 }
 
 inline Vec3 randomUnitVector() {
+	Vec3 seedVec;
 	while (true) {
-		Vec3 p = randomVector(-1, 1);
-		float lensq = lengthSquared(p);
-		if (0 < lensq && lensq <= 1)
-			return p / sqrt(lensq);
+		seedVec = randomVector(-1, 1);
+		float lensq = lengthSquared(seedVec);
+		if (0 < lensq && lensq <= 1) {
+			std::cout << "returned vec: " << seedVec / sqrt(lensq) << std::endl;
+			return seedVec;
+		}
+		if (seedVec.x < 0)
+			seedVec.x *= -1;
+		if (seedVec.y < 0)
+			seedVec.y *= -1;
+		if (seedVec.z < 0)
+			seedVec.z *= -1;
 	}
 }
 

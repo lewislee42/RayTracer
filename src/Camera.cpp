@@ -6,6 +6,7 @@
 
 void Camera::render(const std::vector<Object3D> world, SDLTextureObject& texture) {
 	this->initialize();
+	/*uint8_t wholearray;*/
 
 	/*std::cout << "Pixels: " << this->imageW << " x " << this->_imageH << "\n";*/
 	for (int i = 0; i < this->_imageH; i++) {
@@ -97,7 +98,7 @@ Vec3 Camera::rayColor(const Ray& r, int depth, const std::vector<Object3D>& worl
 			}
 			return (Vec3){0, 0, 0};
 		}
-		Vec3 unitDirection = unitVector(r.direction);
+		Vec3 unitDirection = unitVector(currentRay.direction);
 		float a = 0.5 * (unitDirection.y + 1.0);
 		color = (1.0 - a) * (Vec3){1, 1, 1} + a * (Vec3){0.5, 0.7, 1.0};
 
@@ -126,5 +127,14 @@ int Camera::getHeight() const {
 	return this->_imageH;
 }
 
+CameraData Camera::getCameraData() const {
+	return (CameraData){
+		this->_pixel00Loc,
+		this->_pixelDeltaU,
+		this->_pixelDeltaV,
+		this->_center,
+		this->imageW
+	};
+}
 
 

@@ -26,25 +26,6 @@ int main(int argc, char *argv[]) {
 	SDLObject sdlObject(cam.imageW, cam.imageW / cam.aspectRatio);
 	SDLTextureObject texture(sdlObject.getRenderer());
 
-	// World
-	/*//*/
-	/*shared_ptr<Lambertian> ground = make_shared<Lambertian>(Vec3(0.8, 0.8, 0.0));*/
-	/*shared_ptr<Lambertian> centerBall = make_shared<Lambertian>(Vec3(0.1, 0.2, 0.5));*/
-	/*shared_ptr<Dielectric> metalBallLeft = make_shared<Dielectric>(1.5);*/
-	/*shared_ptr<Metal> metalBallRight = make_shared<Metal>(Vec3(0.8, 0.6, 0.2), 1.0);*/
-
-	/*double R = std::cos(pi / 4);*/
-	/*shared_ptr<Metal> metalBallRight = make_shared<Metal>(Vec3(0.8, 0.8, 0.8), 0.1);*/
-	/*shared_ptr<Lambertian> ballLeft = make_shared<Lambertian>(Vec3(0.1, 0.2, 0.2));*/
-
-
-	/*Object3DList world;*/
-	/*world.add(make_shared<Sphere>(Vec3(0.0, -100.5, -1.0), 100.0, ground));*/
-	/*world.add(make_shared<Sphere>(Vec3(0.0, 0.0, -1.2), 0.5, centerBall));*/
-	/*world.add(make_shared<Sphere>(Vec3(-1.0, 0.0, -1.0), 0.5, metalBallLeft));*/
-	/*world.add(make_shared<Sphere>(Vec3(1.0, 0.0, -1.2), 0.3, metalBallRight));*/
-	/**/
-
 	std::vector<Object3D> world;
 	world.push_back((Object3D){
 		(Vec3){0, -100.5, -1.0},

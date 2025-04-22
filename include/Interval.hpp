@@ -9,9 +9,6 @@ typedef struct Interval {
 	float max;
 }	Interval;
 
-float	size();
-bool	contains(float x);
-bool	surrounds(float x);
 float	clamp(float x, float min, float max);
 
 #endif /* INTERVAL_CLASS_HPP */

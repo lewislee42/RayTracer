@@ -26,7 +26,7 @@ void SDLTextureObject::lockTexture() {
 	if (this->_pixels != NULL)
 		throw SDLTextureObject::SDLTextureAlreadyLocked();
 
-	if (!SDL_LockTexture(this->_texture, NULL, &temp, &pitch)) {
+	if (!SDL_LockTexture(this->_texture, NULL, &temp, &this->_pitch)) {
 		SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Could not lock texture: %s", SDL_GetError());
 		throw SDLTextureObject::SDLTextureCouldNotLock();
 	}
@@ -58,6 +58,9 @@ void SDLTextureObject::putPixel(int x, int y, Vec3 color) {
 
 	/*color *= 255.999;*/
 	
+	/*Uint32 colorTemp = (int(color.x) << 24) | (int(color.y) << 16) | (int(color.z) << 8) | 256;*/
+	/*std::cout << "color: " << color.x << " " << color.y << " " << color.z << std::endl;*/
+	/*this->_pixels[int((y * this->_width) + x)] = colorTemp;*/
 	this->_pixels[int((y * this->_width) + x)] =
 		SDL_MapRGBA(
 			SDL_GetPixelFormatDetails(SDL_PIXELFORMAT_RGBA32),
@@ -67,6 +70,8 @@ void SDLTextureObject::putPixel(int x, int y, Vec3 color) {
 			int(color.z),
 			255
 		);
+	/*Uint8* tempPixels = (Uint8*)this->_pixels + ((y * this->_pitch) + x * 4);*/
+	/**((Uint32*)tempPixels) = colorTemp;*/
 }
 
 SDL_Texture* SDLTextureObject::getTexture() {

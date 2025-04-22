@@ -9,6 +9,14 @@
 # include <Material.hpp>
 # include <vector>
 
+typedef struct CameraData {
+	Vec3	pixel00Loc;
+	Vec3	pixelDeltaU;
+	Vec3	pixelDeltaV;
+	Vec3	center;
+	int		imageW;
+}	CameraData;
+
 class Camera {
 public:
 	double	aspectRatio		= 16.0 / 9;
@@ -38,6 +46,8 @@ private:
 	Vec3	rayColor(const Ray& r, int depth, const std::vector<Object3D>& world, const int& objectAmount) const;
 	Vec3	sampleSquare() const;
 	Ray		getRay(int i, int j) const;
+
+	CameraData	getCameraData() const;
 };
 
 
