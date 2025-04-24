@@ -1,5 +1,5 @@
 #include <RayTracing.hpp>
-#include <Material.hpp>
+#include <RayTracingStructs.hpp>
 #include <Utils.hpp>
 
 #define NS_PRIVATE_IMPLEMENTATION

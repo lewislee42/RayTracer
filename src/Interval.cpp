@@ -1,5 +1,4 @@
 
-# include <Interval.hpp>
 
 float	clamp(float x, float min, float max) {
 	if (x < min)

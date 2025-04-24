@@ -1,11 +1,11 @@
 [
   {
     "arguments": [
-      "/usr/bin/clang",
-      "-Wall",
+      "/usr/bin/clang++",
       "-std=c++17",
       "-I/usr/local/include",
       "-Iinclude",
+      "-Ilibs/metal-cpp",
       "-fsanitize=address",
       "-c",
       "-o",
@@ -15,5 +15,175 @@
     "directory": "/Users/lewislee/Documents/Coding/3d_renderer",
     "file": "/Users/lewislee/Documents/Coding/3d_renderer/src/main.cpp",
     "output": "/Users/lewislee/Documents/Coding/3d_renderer/obj/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-I/usr/local/include",
+      "-Iinclude",
+      "-Ilibs/metal-cpp",
+      "-fsanitize=address",
+      "-c",
+      "-o",
+      "obj/SDLObject.o",
+      "src/SDLObject.cpp"
+    ],
+    "directory": "/Users/lewislee/Documents/Coding/3d_renderer",
+    "file": "/Users/lewislee/Documents/Coding/3d_renderer/src/SDLObject.cpp",
+    "output": "/Users/lewislee/Documents/Coding/3d_renderer/obj/SDLObject.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-I/usr/local/include",
+      "-Iinclude",
+      "-Ilibs/metal-cpp",
+      "-fsanitize=address",
+      "-c",
+      "-o",
+      "obj/SDLTextureObject.o",
+      "src/SDLTextureObject.cpp"
+    ],
+    "directory": "/Users/lewislee/Documents/Coding/3d_renderer",
+    "file": "/Users/lewislee/Documents/Coding/3d_renderer/src/SDLTextureObject.cpp",
+    "output": "/Users/lewislee/Documents/Coding/3d_renderer/obj/SDLTextureObject.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-I/usr/local/include",
+      "-Iinclude",
+      "-Ilibs/metal-cpp",
+      "-fsanitize=address",
+      "-c",
+      "-o",
+      "obj/Ray.o",
+      "src/Ray.cpp"
+    ],
+    "directory": "/Users/lewislee/Documents/Coding/3d_renderer",
+    "file": "/Users/lewislee/Documents/Coding/3d_renderer/src/Ray.cpp",
+    "output": "/Users/lewislee/Documents/Coding/3d_renderer/obj/Ray.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-I/usr/local/include",
+      "-Iinclude",
+      "-Ilibs/metal-cpp",
+      "-fsanitize=address",
+      "-c",
+      "-o",
+      "obj/Object3D.o",
+      "src/Object3D.cpp"
+    ],
+    "directory": "/Users/lewislee/Documents/Coding/3d_renderer",
+    "file": "/Users/lewislee/Documents/Coding/3d_renderer/src/Object3D.cpp",
+    "output": "/Users/lewislee/Documents/Coding/3d_renderer/obj/Object3D.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-I/usr/local/include",
+      "-Iinclude",
+      "-Ilibs/metal-cpp",
+      "-fsanitize=address",
+      "-c",
+      "-o",
+      "obj/Object3DList.o",
+      "src/Object3DList.cpp"
+    ],
+    "directory": "/Users/lewislee/Documents/Coding/3d_renderer",
+    "file": "/Users/lewislee/Documents/Coding/3d_renderer/src/Object3DList.cpp",
+    "output": "/Users/lewislee/Documents/Coding/3d_renderer/obj/Object3DList.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-I/usr/local/include",
+      "-Iinclude",
+      "-Ilibs/metal-cpp",
+      "-fsanitize=address",
+      "-c",
+      "-o",
+      "obj/Sphere.o",
+      "src/Sphere.cpp"
+    ],
+    "directory": "/Users/lewislee/Documents/Coding/3d_renderer",
+    "file": "/Users/lewislee/Documents/Coding/3d_renderer/src/Sphere.cpp",
+    "output": "/Users/lewislee/Documents/Coding/3d_renderer/obj/Sphere.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-I/usr/local/include",
+      "-Iinclude",
+      "-Ilibs/metal-cpp",
+      "-fsanitize=address",
+      "-c",
+      "-o",
+      "obj/Interval.o",
+      "src/Interval.cpp"
+    ],
+    "directory": "/Users/lewislee/Documents/Coding/3d_renderer",
+    "file": "/Users/lewislee/Documents/Coding/3d_renderer/src/Interval.cpp",
+    "output": "/Users/lewislee/Documents/Coding/3d_renderer/obj/Interval.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-I/usr/local/include",
+      "-Iinclude",
+      "-Ilibs/metal-cpp",
+      "-fsanitize=address",
+      "-c",
+      "-o",
+      "obj/Camera.o",
+      "src/Camera.cpp"
+    ],
+    "directory": "/Users/lewislee/Documents/Coding/3d_renderer",
+    "file": "/Users/lewislee/Documents/Coding/3d_renderer/src/Camera.cpp",
+    "output": "/Users/lewislee/Documents/Coding/3d_renderer/obj/Camera.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-I/usr/local/include",
+      "-Iinclude",
+      "-Ilibs/metal-cpp",
+      "-fsanitize=address",
+      "-c",
+      "-o",
+      "obj/Vec3.o",
+      "src/Vec3.cpp"
+    ],
+    "directory": "/Users/lewislee/Documents/Coding/3d_renderer",
+    "file": "/Users/lewislee/Documents/Coding/3d_renderer/src/Vec3.cpp",
+    "output": "/Users/lewislee/Documents/Coding/3d_renderer/obj/Vec3.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-I/usr/local/include",
+      "-Iinclude",
+      "-Ilibs/metal-cpp",
+      "-fsanitize=address",
+      "-c",
+      "-o",
+      "obj/Material.o",
+      "src/Material.cpp"
+    ],
+    "directory": "/Users/lewislee/Documents/Coding/3d_renderer",
+    "file": "/Users/lewislee/Documents/Coding/3d_renderer/src/Material.cpp",
+    "output": "/Users/lewislee/Documents/Coding/3d_renderer/obj/Material.o"
   }
 ]

@@ -1,5 +1,6 @@
-#include "SDLTextureObject.hpp"
-#include "Utils.hpp"
+#include <SDLTextureObject.hpp>
+#include <Utils.hpp>
+#include <RayTracing.hpp>
 
 SDLTextureObject::SDLTextureObject(SDL_Renderer* renderer): _pixels(NULL), _width(0), _height(0) {
 	if (!SDL_GetRenderOutputSize(renderer, &this->_width, &this->_height)) {

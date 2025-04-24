@@ -10,6 +10,5 @@ typedef struct Ray {
 	Vec3	direction;
 }	Ray;
 
-Vec3 at(const Ray& r, const double& t);
 
 #endif /* RAY_CLASS_HPP */

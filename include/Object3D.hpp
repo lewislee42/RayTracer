@@ -2,7 +2,6 @@
 #ifndef OBJECT3D_ABSTRACT_CLASS_HPP
 # define OBJECT3D_ABSTRACT_CLASS_HPP 
 
-# include <Ray.hpp>
 # include <Vec3.hpp>
 # include <Material.hpp>
 # include <Interval.hpp>

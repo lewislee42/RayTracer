@@ -1,5 +1,5 @@
 SRC_DIR = src
-SRC_FILES = main.cpp SDLObject.cpp SDLTextureObject.cpp Ray.cpp Object3D.cpp Object3DList.cpp Sphere.cpp Interval.cpp Camera.cpp Vec3.cpp Material.cpp
+SRC_FILES = main.cpp SDLObject.cpp SDLTextureObject.cpp Ray.cpp Object3D.cpp Interval.cpp Camera.cpp Vec3.cpp Material.cpp MetalAdder.cpp
 RASTER_FILES = utils.old.cpp SDLObject.cpp SDLTextureObject.cpp
 HEADER_DIR = include
 OBJ_DIR = obj
@@ -9,15 +9,15 @@ SOURCES = $(addprefix	$(SRC_DIR)/, $(SRC_FILES))
 OBJECTS = $(subst $(SRC_DIR),$(OBJ_DIR), $(SOURCES:.cpp=.o))
 RASTER_SOURCES = $(addprefix	$(SRC_DIR)/, $(RASTER_FILES))
 RASTER_OBJECTS = $(subst $(RASTER_FILES),$(OBJ_DIR), $(RASTER_SOURCES:.cpp=.o))
-COMPILER = clang++
-CXXFLAGS = -std=c++17 -I/usr/local/include -I$(HEADER_DIR) -Ilibs/metal-cpp -fsanitize=address
-LINKERFLAGS = -L/usr/local/lib -Wl,-rpath,/usr/local/lib -lSDL3 -lstdc++ -framework AppKit -framework Metal -framework MetalKit -lobjc 
+COMPILER = clang++ 
+CXXFLAGS = -std=c++17 -I/usr/local/include -I$(HEADER_DIR) -I./libs/metal-cpp -fsanitize=address
+LINKERFLAGS = -L/usr/local/lib -Wl,-rpath,/usr/local/lib -lSDL3 -stdlib=libc++ -framework Metal -framework Foundation -framework MetalKit -lobjc 
 
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
 	@echo "\033[96mcompiling \033[0;33m"$(TARGET)"\033[0m"
-	@$(COMPILER) $(CXXFLAGS) $(LINKERFLAGS) -o $@ $^
+	$(COMPILER) $(CXXFLAGS) $(LINKERFLAGS) -o $@ $^
 
 Raster: $(RASTER_OBJECTS)
 	@echo "\033[96mcompiling \033[0;33m"$(TARGET)"\033[0m"

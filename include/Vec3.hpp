@@ -3,17 +3,12 @@
 
 #include <cfloat>
 #include <cmath>
-# include <limits>
+#include <limits>
 #include <cstdint>
 #include <iostream>
 #include <simd/simd.h>
 #include <Utils.hpp>
-
-typedef struct Vec3 {
-	float x;
-    float y;
-    float z;
-}	Vec3;
+#include <RayTracingStructs.hpp>
 
 // point3 is just an alias for Vec3, but useful for geometric clarity in the code.
 using point3 = Vec3;
@@ -102,6 +97,7 @@ inline Vec3 randomVector() {
 	return (Vec3){randomDouble(), randomDouble(), randomDouble()};
 }
 
+// ref for the rand generator https://github.com/YVin3D/Loki/blob/master/Loki/loki.metal
 inline Vec3 randomVector(float min, float max, Vec3 v) {
 
 	if (v.x < 0)

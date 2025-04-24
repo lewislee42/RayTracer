@@ -1,6 +1,6 @@
 
-# include <Object3D.hpp>
-# include <Material.hpp>
+#include <RayTracingStructs.hpp>
+# include <RayTracing.hpp>
 
 bool hit(const Object3D& obj, const Ray& r, Interval rayT, HitRecord* rec) {
 	Vec3 oc = obj.center - r.origin;

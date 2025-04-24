@@ -1,7 +1,7 @@
 
-# include <Material.hpp>
-# include <Object3D.hpp>
 
+# include <RayTracingStructs.hpp>
+#include <Vec3.hpp>
 
 void setFaceNormal(HitRecord* hitRecord, const Ray&r, const Vec3& outwardNormal) {
 	hitRecord->frontFace = dot(r.direction, outwardNormal) < 0;
@@ -13,8 +13,8 @@ void setFaceNormal(HitRecord* hitRecord, const Ray&r, const Vec3& outwardNormal)
 
 // Lambertian
 bool scatterLambertian(const Material& mat, const Ray& rIn, const HitRecord& rec, Vec3* attenuation, Ray* scattered) {
-	/*std::cout << "dount: " << rec.p << std::endl;*/
     Vec3 scatterDirection = rec.normal + randomUnitVector(rIn.direction);
+	/*std::cout << "dount: " << rec.p << std::endl;*/
 
     if (nearZero(scatterDirection))
         scatterDirection = rec.normal;
