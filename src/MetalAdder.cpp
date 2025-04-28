@@ -33,6 +33,7 @@ MetalAdder::MetalAdder(MTL::Device *d, const int& imageW, const int& imageH) {
 	}
 
 	this->_mCommandQueue = this->_mDevice->newCommandQueue();
+	std::cout << "Command Queue address: " << this->_mCommandQueue << std::endl;
 
 	if (this->_mCommandQueue == nullptr) {
 		std::cerr << "Error: failed to find command queue\n";
@@ -56,6 +57,7 @@ void MetalAdder::sendComputeCommand(
 	this->updateVariables(camData, objects, objectAmount, bounces, pixels);
 
 	MTL::CommandBuffer* commandBuffer = _mCommandQueue->commandBuffer();
+	std::cout << "Command buffers address: " << commandBuffer << std::endl;
 	if (commandBuffer == nullptr) {
 		std::cerr << "Error: failed to create command buffer\n";
 		return; // maybe throw error here instead
@@ -77,15 +79,15 @@ void MetalAdder::sendComputeCommand(
 	computeCommandEncoder->setBuffer(this->_pixels, 0, 4);
 
 	MTL::Size gridSize = MTL::Size::Make(camData.imageW, camData.imageH, 1);
-	std::cout << "gridSize " << gridSize.width << "" << std::endl;
+	std::cout << "gridSize " << gridSize.width << " " << gridSize.height << " " << gridSize.depth << std::endl;
 	NS::UInteger threadGroupSize = this->_mAddFunctionPso->maxTotalThreadsPerThreadgroup();
 
 	if (threadGroupSize > camData.imageW)
 		threadGroupSize = camData.imageW;
 
 
-	MTL::Size threadgroupSize = MTL::Size::Make(8, 8, 1);
-	std::cout << "threadGroupSize " << threadGroupSize << std::endl;
+	MTL::Size threadgroupSize = MTL::Size::Make(1, 1, 1);
+	std::cout << "threadGroupSize " << threadgroupSize.width << " " << threadgroupSize.height << " " << threadgroupSize.depth << std::endl;
 	computeCommandEncoder->dispatchThreads(gridSize, threadgroupSize);
 	computeCommandEncoder->endEncoding();
 

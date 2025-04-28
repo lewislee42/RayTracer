@@ -39,7 +39,7 @@ void Camera::render(const std::vector<Object3D> world,
       color.x = this->_pixels[currentPos];
       color.y = this->_pixels[currentPos + 1];
       color.z = this->_pixels[currentPos + 2];
-      std::cout << "color: " << color << std::endl;
+      /*std::cout << "color: " << color << std::endl;*/
       texture.putPixel(j, i, this->_pixelSampleWeight * color);
     }
   }
