@@ -220,4 +220,11 @@ inline float degreesToRadians(float degrees) {
     return degrees * pi / 180;
 }
 
+inline float randomFloat() {
+	return rand() / (RAND_MAX);
+}
+ inline Vec3 randomVector() {
+	return Vec3(rand(), rand(), rand());
+ }
+
 #endif

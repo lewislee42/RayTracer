@@ -151,8 +151,8 @@ inline Vec3 randomVector(float min, float max, Vec3 v) {
 }
 
 inline float randomValueNormalDistribution(Vec3 seed) {
-    Vec3 newSeed = randomVector(0, 1, seed);
-    Vec3 newSeed1 = randomVector(0, 1, newSeed);
+    Vec3 newSeed = randomVector(0, 10, seed);
+    Vec3 newSeed1 = randomVector(0, 10, newSeed);
 
 
 	float theta = 2.0f * M_PI_F * randomFloat(0, 1, newSeed1);
@@ -161,9 +161,9 @@ inline float randomValueNormalDistribution(Vec3 seed) {
 }
 
 inline Vec3 randomDirection(Vec3 seed) {
-    Vec3 newSeed1 = randomVector(0, 1, seed);
-    Vec3 newSeed2 = randomVector(0, 1, newSeed1);
-	Vec3 newSeed3 = randomVector(0, 1, newSeed2);
+    Vec3 newSeed1 = randomVector(0, 10, seed);
+    Vec3 newSeed2 = randomVector(0, 10, newSeed1);
+	Vec3 newSeed3 = randomVector(0, 10, newSeed2);
     
     float x = randomValueNormalDistribution(newSeed1);
     float y = randomValueNormalDistribution(newSeed2);
@@ -186,12 +186,12 @@ inline Vec3 randomUnitVector(Vec3 v) {
         if (0 < lensq && lensq <= 1) {
             return seedVec / metal::sqrt(lensq);
         }
-        if (seedVec.x < 0)
-            seedVec.x *= -1;
-        if (seedVec.y < 0)
-            seedVec.y *= -1;
-        if (seedVec.z < 0)
-            seedVec.z *= -1;
+//        if (seedVec.x < 0)
+//            seedVec.x *= -1;
+//        if (seedVec.y < 0)
+//            seedVec.y *= -1;
+//        if (seedVec.z < 0)
+//            seedVec.z *= -1;
     }
 }
 
@@ -226,7 +226,7 @@ inline Vec3 refract(const Vec3 uv, const Vec3 n, float etaIOverEtat) {
 */
 Vec3 sampleSquare(Vec3 seed) {
 
-	Vec3 seed1 = randomVector(0, 1, seed);
+	Vec3 seed1 = randomDirection(seed);
 //	Vec3 seed2 = randomUnitVector(seed1);
     
     seed1.x -= 0.5f;
