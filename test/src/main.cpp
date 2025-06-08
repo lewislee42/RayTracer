@@ -19,12 +19,12 @@ int main(int argc, char *argv[]) {
 	Camera cam(
         imageW,
         aspectRatio,
-        5000, // sample per pixel
-        50, // bounces
-        50, // sample light
+        100, // sample per pixel
+		10, // bounces
+        1, // sample light
         30, // fov
-        Vec3(12.8, 7.4, 11.3), // center
-        Vec3(-0.7, -0.3, -0.6), // direction
+        Vec3(3.62, 5.76, 11.82), // center
+        Vec3(-0.26, -0.35, -0.89), // direction
         Vec3(0 , 1 , 0), // up
         sdlObject.getRenderer()
     );
@@ -46,8 +46,8 @@ int main(int argc, char *argv[]) {
     
 //    for (int a = -11; a < 11; a++) {
 //        for (int b = -11; b < 11; b++) {
-//            float chooseMat = randomDouble();
-//            Vec3 center(a + 0.9*randomDouble(), 0.2, b + 0.9*randomDouble());
+//            float chooseMat = randomFloat();
+//            Vec3 center(a + 0.9*randomFloat(), 0.2, b + 0.9*randomFloat());
 //
 //            if (length(center - (Vec3){4, 0.2, 0}) > 0.9) {
 //                Material sphereMaterial;
@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
 //                } else if (chooseMat < 0.95) {
 //                    // metal
 //                    Vec3 albedo = randomVector(0.5, 1, Vec3(1 * b + a, b - a * 2, a * b - 0.129));
-//                    float fuzz = 0.5 * randomDouble();
+//                    float fuzz = 0.5 * randomFloat();
 //                    sphereMaterial = Material(MaterialType::METAL, albedo, fuzz, 0);
 //                    world.push_back(Object3D(center, 0.2, sphereMaterial));
 //                } else {
@@ -103,21 +103,21 @@ int main(int argc, char *argv[]) {
     Material material1 = Material(MaterialType::DIELECTRIC, Vec3(), 0, 1.5);
     world.push_back(Object3D(Vec3(0, 1, 0), 1.0, material1));
 //    
-    Material material2 = Material(MaterialType::LAMBERTIAN, Vec3(1, 1, 1), 0, 0);
+    Material material2 = Material(MaterialType::LAMBERTIAN, Vec3(1, 0, 0), 0, 0);
     world.push_back(Object3D(Vec3(-4, 1, 0), 1.0, material2, 0));
     
-    Material material3 = Material(MaterialType::METAL, Vec3(0.7, 0.6, 0.5), 0.1, 0);
+    Material material3 = Material(MaterialType::METAL, Vec3(0.7, 0.6, 0.5), 0, 0);
     world.push_back(Object3D(Vec3(4, 1, 0), 1.0, material3, 0));
 //    
     Material material4 = Material(MaterialType::DIFFUSE_LIGHT, Vec3(1, 0, 0), 0, 0);
     world.push_back(Object3D(Vec3(3, 1, 2), 0.5, material4, 0));
-//    
+    
     Material material5 = Material(MaterialType::DIFFUSE_LIGHT, Vec3(0, 1, 0), 0, 0);
     world.push_back(Object3D(Vec3(3, 0.7, 4), 0.3, material5));
     
     Material material6 = Material(MaterialType::DIFFUSE_LIGHT, Vec3(5, 5, 5), 0, 0);
     world.push_back(Object3D(Vec3(3, 3, -2.4), 0.7, material6));
-//    
+////    
     Material material7 = Material(MaterialType::DIFFUSE_LIGHT, Vec3(0, 1, 1), 0, 0);
     world.push_back(Object3D(Vec3(-4, 1, -2), 0.7, material7));
 
@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < world.size(); i++) {
         world[i].id = i;
     }
-    std::cout << "size = " << world.size() << std::endl;
+//    std::cout << "size = " << world.size() << std::endl;
     
 
     
@@ -261,9 +261,9 @@ int main(int argc, char *argv[]) {
 //            cam.center = cam.center + ((Vec3){0, -1, 0} * 0.1);
 //        }
 //        
-//        if (renderRealTime == true) {
-//            cam.render(world);
-//        }
+        if (renderRealTime == true) {
+            cam.render(world);
+        }
 //        std::cout << "center: " << cam.center << std::endl;
 //        std::cout << "direction: " << cam.direction << std::endl;
     }

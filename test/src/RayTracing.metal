@@ -21,7 +21,7 @@ Vec3 emitted(const Material mat) {
 
 // Lambertian
 bool scatterLambertian(const Material mat, const Ray rIn, const HitRecord rec, thread Vec3* attenuation, thread Ray* scattered) {
-	Vec3 scatterDirection = rec.normal + randomUnitVector(rIn.direction * scattered->direction); // works now
+	Vec3 scatterDirection = rec.normal + randomUnitVector(rIn.direction); // works now
     if (nearZero(scatterDirection))
         scatterDirection = rec.normal;
 
@@ -33,7 +33,7 @@ bool scatterLambertian(const Material mat, const Ray rIn, const HitRecord rec, t
 // Metal
 bool scatterMetal(const Material mat, const Ray rIn, const HitRecord rec, thread Vec3* attenuation, thread Ray* scattered) {
     Vec3 reflected = reflect(rIn.direction, rec.normal);
-	reflected = unitVector(reflected) + (mat.fuzz * randomUnitVector(scattered->direction * scattered->direction)); // works now
+	reflected = unitVector(reflected) + (mat.fuzz * randomDirection(scattered->direction)); // works now
     *scattered = (Ray){rec.p, reflected};
     *attenuation = mat.albedo;
 
@@ -62,7 +62,7 @@ bool scatterDielectric(const Material mat, const Ray rIn, const HitRecord rec, t
     bool cannotRefract = ri * sinTheta > 1.0f;
     Vec3 direction;
 
-    if (cannotRefract || reflectance(cosTheta, ri) > randomFloat(0.0001f, 1.0f, randomVector(0.0f, 1.0f, rec.normal * rIn.origin)))
+    if (cannotRefract || reflectance(cosTheta, ri) > randomFloat(0.0f, 1.0f, randomUnitVector(scattered->direction)))
         direction = reflect(unitDirection, rec.normal);
     else
         direction = refract(unitDirection, rec.normal, ri);
@@ -156,12 +156,6 @@ Ray getRay(int x, int y, const struct CameraData camData, Vec3 seed) {
     return (Ray){rayOrigin, rayDirection};
 }
 
-bool isSameVec(const Vec3 v1, const Vec3 v2) {
-    if (v1.x == v2.x && v1.y == v2.y && v1.z == v2.z)
-        return true;
-    return false;
-}
-
 Vec3 directLighting(const HitRecord currentRecord, int lightSampleAmount, device const Object3D* objects, const uint objectAmount) {
     
     uint i = 0;
@@ -205,7 +199,8 @@ Vec3 directLighting(const HitRecord currentRecord, int lightSampleAmount, device
 			bool hitsLight = true;
 			
 			for (uint j = 0; j < objectAmount; j++) {
-				if (i != j && objects[j].id != currentRecord.objectId && // so that the current object does not check itself
+				if (i != j &&
+				objects[j].id != currentRecord.objectId && // so that the current object does not check itself
 					objects[j].mat.type != MaterialType::DIELECTRIC && gotHit(r, interval, &hitR, &objects[j], 1)) {
 					if (hitR.t < lightDist) {
 						hitsLight = false;
@@ -243,19 +238,20 @@ Vec3 rayColor(const Ray r, uint currentBounces, int lightSampleAmount, device co
         }
         
         if (!gotHit(currentRay, (Interval){0.001f, INFINITY}, &rec, objects, objectCount)) { // if it hits nothing then return the sky color
+//			return (Vec3){0, 0, 0};
             break; // backgound color for now
         }
         Ray scattered;
         Vec3 attenuation = (Vec3){0.0f, 0.0f, 0.0f};
-//		Vec3 colorFromEmission = directLighting(rec, lightSampleAmount, objects, objectCount); // direct lighting
-		Vec3 colorFromEmission = emitted(rec.mat);  // indirection lighting
+		Vec3 colorFromEmission = directLighting(rec, lightSampleAmount, objects, objectCount); // direct lighting
+//		Vec3 colorFromEmission = emitted(rec.mat);
         
         if (!scatter(rec.mat, currentRay, rec, &attenuation, &scattered)) {
-            incomingLight = colorFromEmission;
+			incomingLight = colorFromEmission * color;
             break ;
         }
         incomingLight = incomingLight + (colorFromEmission * color);
-        color = color * attenuation;
+		color = color * attenuation;
         currentRay = scattered;
     }
     return incomingLight;
@@ -277,13 +273,13 @@ kernel void computeMain(
         
     Vec3    color           = {0.0f, 0.0f, 0.0f};
 	Vec3	seed			= (Vec3){
-				(1.72f + tid.x) * (0.1f * camData.frameCount),
-				(1.94f + tid.y) * (0.6f * camData.frameCount),
-				(1.13f + tid.y + tid.x) * (0.1f * camData.frameCount)
+				float(tid.x + 1.2f),
+				float(tid.y + 1.5f),
+				float(camData.frameCount + 1) / INT_MAX
 			};
 
     for (uint i = 0; i < camData.samplePerPixel; i++) {
-		seed = randomDirection(seed * (0.001f * (camData.frameCount * i)));
+		seed = randomUnitVector(seed);
         Ray ray = getRay(
             tid.x,
             tid.y,
