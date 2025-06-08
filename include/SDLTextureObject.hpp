@@ -4,12 +4,12 @@
 # include <SDL3/SDL.h>
 # include <exception>
 # include <Vec3.hpp>
-# include <Interval.hpp>
 
 class SDLTextureObject {
 private:
 	SDL_Texture*	_texture;
 	Uint32*			_pixels;
+	int				_pitch;
 	int				_width;
 	int				_height;
 

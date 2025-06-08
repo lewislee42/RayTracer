@@ -1,5 +1,6 @@
-#include "SDLTextureObject.hpp"
-#include "Utils.hpp"
+#include <SDLTextureObject.hpp>
+#include <Utils.hpp>
+#include <RayTracing.hpp>
 
 SDLTextureObject::SDLTextureObject(SDL_Renderer* renderer): _pixels(NULL), _width(0), _height(0) {
 	if (!SDL_GetRenderOutputSize(renderer, &this->_width, &this->_height)) {
@@ -26,7 +27,7 @@ void SDLTextureObject::lockTexture() {
 	if (this->_pixels != NULL)
 		throw SDLTextureObject::SDLTextureAlreadyLocked();
 
-	if (!SDL_LockTexture(this->_texture, NULL, &temp, &pitch)) {
+	if (!SDL_LockTexture(this->_texture, NULL, &temp, &this->_pitch)) {
 		SDL_LogError(SDL_LOG_CATEGORY_VIDEO, "Could not lock texture: %s", SDL_GetError());
 		throw SDLTextureObject::SDLTextureCouldNotLock();
 	}
@@ -52,13 +53,15 @@ void SDLTextureObject::putPixel(int x, int y, Vec3 color) {
 	color.y = linearToGamma(color.y);
 	color.z = linearToGamma(color.z);
 
-	static const Interval intensity(0.0, 0.999);
-	color.x = int(256 * intensity.clamp(color.x));
-	color.y = int(256 * intensity.clamp(color.y));
-	color.z = int(256 * intensity.clamp(color.z));
+	color.x = int(256 * clamp(color.x, 0.0, 0.999));
+	color.y = int(256 * clamp(color.y, 0.0, 0.999));
+	color.z = int(256 * clamp(color.z, 0.0, 0.999));
 
 	/*color *= 255.999;*/
 	
+	/*Uint32 colorTemp = (int(color.x) << 24) | (int(color.y) << 16) | (int(color.z) << 8) | 256;*/
+	/*std::cout << "color: " << color.x << " " << color.y << " " << color.z << std::endl;*/
+	/*this->_pixels[int((y * this->_width) + x)] = colorTemp;*/
 	this->_pixels[int((y * this->_width) + x)] =
 		SDL_MapRGBA(
 			SDL_GetPixelFormatDetails(SDL_PIXELFORMAT_RGBA32),
@@ -68,6 +71,8 @@ void SDLTextureObject::putPixel(int x, int y, Vec3 color) {
 			int(color.z),
 			255
 		);
+	/*Uint8* tempPixels = (Uint8*)this->_pixels + ((y * this->_pitch) + x * 4);*/
+	/**((Uint32*)tempPixels) = colorTemp;*/
 }
 
 SDL_Texture* SDLTextureObject::getTexture() {

@@ -3,13 +3,9 @@
 # define UTILS_HPP
 
 # include <cmath>
-# include <iostream>
-# include <memory>
 # include <cstdlib>
 # include <limits>
 
-using std::make_shared;
-using std::shared_ptr;
 
 const float infinity = std::numeric_limits<float>::infinity();
 const float pi = 3.1415926535897932385;
