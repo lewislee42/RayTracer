@@ -53,6 +53,7 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
+    <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
   </ol>
 </details>
@@ -62,7 +63,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[Project_screen_shot][project-photo-1]
+<img src="https://github.com/user-attachments/assets/1fa112d1-b85f-476e-8f33-34243dc09cb1" />
 
 This project is to implement raytracing(path tracing) using Apples Metal api, currently the plan is to implement what i can find and are interested in but for the moment implementing BVH is the goal,
 so far this project features regular path tracing, global illumination (direct + indirect lighting)
@@ -100,9 +101,29 @@ You'll need to install xcode and `SDL3`
 
 
 ### Usage
-[Project_screen_shot][project-photo-2]
+
+<img src="https://github.com/user-attachments/assets/78d5eae3-8e66-40a9-adfc-7ee816545849" />
 Just running it out of the box will run the Raytracer with 100 samples per pixel, 10 bounces per ray shot which will look like the image above (but hitting bad amounts of frames)
 
+<br/>
+
+To change that you can head to the main and reduce the sample ray count to something like 10 to achive playable amount of frames, it will look worser just cause of how the sample data
+also you can move around the scene with `WASD` and the arrow keys to look around
+<br/>
+<img width="511" alt="image" src="https://github.com/user-attachments/assets/531515bc-ba8b-41f5-bee2-9a63684dffe0" />
+<br/>
+
+[project_video][project-video-1]
+
+
+To play around with the color of the lights and the color of the Spheres head to the image below and just play around with the values
+<br/>
+<img width="556" alt="image" src="https://github.com/user-attachments/assets/f16d9a31-ff85-4bc6-82c6-25f33671cacc" />
+<br/>
+
+[project_video][project-video-2]
+
+<br/>
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -135,8 +156,8 @@ Just running it out of the box will run the Raytracer with 100 samples per pixel
 [license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
-[project-photo-1]: https://github.com/user-attachments/assets/1fa112d1-b85f-476e-8f33-34243dc09cb1
-[project-photo-2]: https://github.com/user-attachments/assets/78d5eae3-8e66-40a9-adfc-7ee816545849
+[project-video-1]: https://github.com/user-attachments/assets/cc93355f-1693-441d-98f8-d3664ceb1e42
+[project-video-2]: https://github.com/user-attachments/assets/95e8e5f0-83ef-484f-998f-f22a69d080c2
 [C++]: https://img.shields.io/badge/C++-%2300599C.svg?logo=c%2B%2B&logoColor=white
 [C++-url]: #
 [RayLib]: https://img.shields.io/badge/RAYLIB-FFFFFF?style=for-the-badge&logo=raylib&logoColor=black
@@ -145,6 +166,11 @@ Just running it out of the box will run the Raytracer with 100 samples per pixel
 [Apple-url]: https://developer.apple.com/metal/
 [SDL]: https://img.shields.io/badge/SDL-ffffff
 [SDL-url]: https://www.libsdl.org
+
+
+
+
+
 
 
 
