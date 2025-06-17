@@ -21,7 +21,7 @@ Vec3 emitted(const Material mat) {
 
 // Lambertian
 bool scatterLambertian(const Material mat, const Ray rIn, const HitRecord rec, thread Vec3* attenuation, thread Ray* scattered) {
-	Vec3 scatterDirection = rec.normal + randomUnitVector(rIn.direction); // works now
+	Vec3 scatterDirection = rec.normal + randomUnitVector(scattered->direction * scattered->direction.y); // works now
     if (nearZero(scatterDirection))
         scatterDirection = rec.normal;
 
@@ -33,7 +33,7 @@ bool scatterLambertian(const Material mat, const Ray rIn, const HitRecord rec, t
 // Metal
 bool scatterMetal(const Material mat, const Ray rIn, const HitRecord rec, thread Vec3* attenuation, thread Ray* scattered) {
     Vec3 reflected = reflect(rIn.direction, rec.normal);
-	reflected = unitVector(reflected) + (mat.fuzz * randomDirection(scattered->direction)); // works now
+	reflected = unitVector(reflected) + (mat.fuzz * randomDirection(scattered->direction * scattered->direction.x)); // works now
     *scattered = (Ray){rec.p, reflected};
     *attenuation = mat.albedo;
 
@@ -243,8 +243,8 @@ Vec3 rayColor(const Ray r, uint currentBounces, int lightSampleAmount, device co
         }
         Ray scattered;
         Vec3 attenuation = (Vec3){0.0f, 0.0f, 0.0f};
-		Vec3 colorFromEmission = directLighting(rec, lightSampleAmount, objects, objectCount); // direct lighting
 //		Vec3 colorFromEmission = emitted(rec.mat);
+		Vec3 colorFromEmission = directLighting(rec, lightSampleAmount, objects, objectCount); // direct lighting
         
         if (!scatter(rec.mat, currentRay, rec, &attenuation, &scattered)) {
 			incomingLight = colorFromEmission * color;
@@ -256,6 +256,7 @@ Vec3 rayColor(const Ray r, uint currentBounces, int lightSampleAmount, device co
     }
     return incomingLight;
 }
+
 
 
 // NOTE: always check if the input is correct or not
@@ -275,11 +276,11 @@ kernel void computeMain(
 	Vec3	seed			= (Vec3){
 				float(tid.x + 1.2f),
 				float(tid.y + 1.5f),
-				float(camData.frameCount + 1) / INT_MAX
+				1.0f / INT_MAX
 			};
-
+			
     for (uint i = 0; i < camData.samplePerPixel; i++) {
-		seed = randomUnitVector(seed);
+		seed = randomVector(0.1f, 1.0f, seed * seed.x);
         Ray ray = getRay(
             tid.x,
             tid.y,

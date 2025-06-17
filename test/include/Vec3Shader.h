@@ -225,9 +225,7 @@ inline Vec3 refract(const Vec3 uv, const Vec3 n, float etaIOverEtat) {
  generated numbers to be zero
 */
 Vec3 sampleSquare(Vec3 seed) {
-
-	Vec3 seed1 = randomDirection(seed);
-//	Vec3 seed2 = randomUnitVector(seed1);
+	Vec3 seed1 = randomUnitVector(seed);
     
     seed1.x -= 0.5f;
     seed1.y -= 0.5f;

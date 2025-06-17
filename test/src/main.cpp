@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
 	Camera cam(
         imageW,
         aspectRatio,
-        100, // sample per pixel
+        500, // sample per pixel
 		10, // bounces
         1, // sample light
         30, // fov
@@ -102,14 +102,14 @@ int main(int argc, char *argv[]) {
 
     Material material1 = Material(MaterialType::DIELECTRIC, Vec3(), 0, 1.5);
     world.push_back(Object3D(Vec3(0, 1, 0), 1.0, material1));
-//    
+
     Material material2 = Material(MaterialType::LAMBERTIAN, Vec3(1, 0, 0), 0, 0);
     world.push_back(Object3D(Vec3(-4, 1, 0), 1.0, material2, 0));
     
     Material material3 = Material(MaterialType::METAL, Vec3(0.7, 0.6, 0.5), 0, 0);
     world.push_back(Object3D(Vec3(4, 1, 0), 1.0, material3, 0));
-//    
-    Material material4 = Material(MaterialType::DIFFUSE_LIGHT, Vec3(1, 0, 0), 0, 0);
+ 
+    Material material4 = Material(MaterialType::DIFFUSE_LIGHT, Vec3(1, 1, 0), 0, 0);
     world.push_back(Object3D(Vec3(3, 1, 2), 0.5, material4, 0));
     
     Material material5 = Material(MaterialType::DIFFUSE_LIGHT, Vec3(0, 1, 0), 0, 0);
@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
     
     Material material6 = Material(MaterialType::DIFFUSE_LIGHT, Vec3(5, 5, 5), 0, 0);
     world.push_back(Object3D(Vec3(3, 3, -2.4), 0.7, material6));
-////    
+
     Material material7 = Material(MaterialType::DIFFUSE_LIGHT, Vec3(0, 1, 1), 0, 0);
     world.push_back(Object3D(Vec3(-4, 1, -2), 0.7, material7));
 
