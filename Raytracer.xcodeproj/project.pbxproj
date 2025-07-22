@@ -7,21 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C1512F5C2E2F5AEB0051C0AE /* libSDL3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C1512F5B2E2F5AEB0051C0AE /* libSDL3.0.dylib */; };
-		C1512F5D2E2F5AEB0051C0AE /* libSDL3.0.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = C1512F5B2E2F5AEB0051C0AE /* libSDL3.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C1512F692E2F78CE0051C0AE /* libSDL3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C1512F5B2E2F5AEB0051C0AE /* libSDL3.0.dylib */; };
+		C1512F6C2E2F7AAB0051C0AE /* libSDL3.0.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = C1512F5B2E2F5AEB0051C0AE /* libSDL3.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C1DEC4472E1B772A0058B6D4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1DEC4462E1B772A0058B6D4 /* Foundation.framework */; };
 		C1DEC4492E1B77310058B6D4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1DEC4482E1B77310058B6D4 /* QuartzCore.framework */; };
 		C1DEC44B2E1B77370058B6D4 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1DEC44A2E1B77370058B6D4 /* Metal.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C1512F5E2E2F5AEB0051C0AE /* Embed Libraries */ = {
+		C1512F6D2E2F7AAB0051C0AE /* Embed Libraries */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C1512F5D2E2F5AEB0051C0AE /* libSDL3.0.dylib in Embed Libraries */,
+				C1512F6C2E2F7AAB0051C0AE /* libSDL3.0.dylib in Embed Libraries */,
 			);
 			name = "Embed Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -83,7 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C1512F5C2E2F5AEB0051C0AE /* libSDL3.0.dylib in Frameworks */,
+				C1512F692E2F78CE0051C0AE /* libSDL3.0.dylib in Frameworks */,
 				C1DEC4472E1B772A0058B6D4 /* Foundation.framework in Frameworks */,
 				C1DEC44B2E1B77370058B6D4 /* Metal.framework in Frameworks */,
 				C1DEC4492E1B77310058B6D4 /* QuartzCore.framework in Frameworks */,
@@ -132,7 +132,7 @@
 				C1DEB10F2E1B75590058B6D4 /* Sources */,
 				C1DEB1102E1B75590058B6D4 /* Frameworks */,
 				C1DEB1112E1B75590058B6D4 /* CopyFiles */,
-				C1512F5E2E2F5AEB0051C0AE /* Embed Libraries */,
+				C1512F6D2E2F7AAB0051C0AE /* Embed Libraries */,
 			);
 			buildRules = (
 			);
@@ -325,9 +325,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/opt/homebrew/Cellar/sdl3/lib,
 					/usr/local/lib,
-					/opt/homebrew/Cellar/sdl3/3.2.18/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -342,9 +340,7 @@
 				HEADER_SEARCH_PATHS = "/Users/lewislee/Documents/Coding/Raytracer/Raytracer/Raytracer/libs/metal-cpp";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/opt/homebrew/Cellar/sdl3/lib,
 					/usr/local/lib,
-					/opt/homebrew/Cellar/sdl3/3.2.18/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

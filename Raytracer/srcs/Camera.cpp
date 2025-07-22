@@ -10,11 +10,10 @@ Camera::Camera(
     uint            samplePerPixel,
     uint            maxBounces,
     uint			lightSampleAmount,
-    uint             vfov,
+    uint            vfov,
     Vec3            center,
     Vec3            direction,
-    Vec3            vup,
-    SDL_Renderer*   renderer
+    Vec3            vup
 ):  screenWidth(screenWidth),
     aspectRatio(aspectRatio),
     samplePerPixel(samplePerPixel),
@@ -30,37 +29,10 @@ Camera::Camera(
     if (_screenHeight < 1)
       _screenHeight = 1;
 
-    
-    initialize();
-
-    swapchain = (CA::MetalLayer *)SDL_GetRenderMetalLayer(renderer);
-    _metalAdder = new MetalAdder(swapchain, screenWidth, _screenHeight);
+    updateCameraData();
 }
 
-
-void Camera::render(const ObjectsData& objData, const Object3D* objects, const BVHNode* bvhNodes) {
-    initialize();
-
-    // std::cout << "started rendering\n";
-    std::chrono::time_point startTime = std::chrono::system_clock::now();
-    
-    RaytracingMetaData metaData = getMetaData();
-    _metalAdder->sendComputeCommand(
-        metaData,
-        objects,
-        bvhNodes,
-        objData
-    );
-    
-    std::chrono::time_point endTime = std::chrono::system_clock::now();
-    auto difference = endTime - startTime;
-    auto differenceMillisecond = std::chrono::duration_cast<std::chrono::milliseconds>(difference);
-    long long millisecondCount = differenceMillisecond.count();
-    std::cout << "ms: " << millisecondCount << ", FPS: " << static_cast<int>(1000.0f / millisecondCount) << std::endl;
-    
-}
-
-void Camera::initialize() {
+void Camera::updateCameraData() {
     // Calculating the viewport dimensions
     float focalLength = 1;
     float theta = degreesToRadians(vfov);
@@ -84,19 +56,16 @@ void Camera::initialize() {
 
 RaytracingMetaData Camera::getMetaData() const {
     RaytracingMetaData data = (RaytracingMetaData){
-        _pixel00Loc,  _pixelDeltaU,
-        _pixelDeltaV, center, samplePerPixel, lightSampleAmount,
-        screenWidth, static_cast<uint>(screenWidth / aspectRatio),
+        _pixel00Loc,
+		_pixelDeltaU,
+        _pixelDeltaV,
+        center,
+        samplePerPixel,
+        lightSampleAmount,
+        screenWidth,
+        static_cast<uint>(screenWidth / aspectRatio),
 		maxBounces
     };
-//    std::cout << "data ----" << std::endl <<
-//    "pixel00Loc: " << _pixel00Loc << std::endl <<
-//    "pixelDeltaU: " << _pixelDeltaU << std::endl <<
-//    "pixelDeltaV: " << _pixelDeltaV << std::endl <<
-//    "center: " << _center << std::endl <<
-//    "samplePerPixel: " << samplePerPixel << std::endl <<
-//    "imageW: " << imageW << std::endl <<
-//    "imageH: " << int(imageW / aspectRatio) << std::endl;
     return data;
 }
 
@@ -147,42 +116,44 @@ void	Camera::updateMovementBools(const SDL_Event event) {
 	}
 }
 
-void Camera::updateCamera() {
+void Camera::updateCameraPosDir(float deltaTime) {
 	if (movementBools.keyW == true) {
-		center = center + (direction * 0.1);
+		center = center + (direction * MOVE_SPEED * deltaTime);
 		std::cout << "W pressed... center: " << center << std::endl;
 	}
 	if (movementBools.keyS == true) {
-		center = center + (-1 * direction * 0.1);
+		center = center + (-1 * direction * MOVE_SPEED * deltaTime);
 		std::cout << "S pressed... center: " << center << std::endl;
 	}
 	if (movementBools.keyA == true) {
-		center = center + (-1 * cross(direction, (Vec3){0, 1, 0}) *  0.1);
+		center = center + (-1 * cross(direction, (Vec3){0, 1, 0}) * MOVE_SPEED * deltaTime);
 		std::cout << "A pressed... center: " << center << std::endl;
 	}
 	if (movementBools.keyD == true) {
-		center = center + (cross(direction, (Vec3){0, 1, 0}) *  0.1);
+		center = center + (cross(direction, (Vec3){0, 1, 0}) * MOVE_SPEED * deltaTime);
 		std::cout << "D pressed... center: " << center << std::endl;
 	}
 	if (movementBools.keyTurnLeft == true) {
-		direction = normalizeVec(direction + (cross(direction, (Vec3){0, -1, 0}) * 0.01));
+		direction = normalizeVec(direction + (cross(direction, (Vec3){0, -1, 0}) * TURN_SPEED * deltaTime));
 		std::cout << "Left pressed... direction: " << direction << std::endl;
 	}
 	if (movementBools.keyTurnRight == true) {
-		direction = normalizeVec(direction + (cross(direction, (Vec3){0, 1, 0}) * 0.01));
+		direction = normalizeVec(direction + (cross(direction, (Vec3){0, 1, 0}) * TURN_SPEED * deltaTime));
 		std::cout << "Right pressed... direction: " << direction << std::endl;
 	}
 	if (movementBools.keyTurnUp == true) {
 		Vec3 right = normalizeVec(cross(direction, vup));
-		direction = direction * cos(0.01) + cross(right, direction) * sin(0.01) + right * dot(right, direction) * (1.0f - cos(0.01));
+		float turnAngle = TURN_SPEED * deltaTime;
+		direction = direction * cos(turnAngle) + cross(right, direction) * sin(turnAngle) + right * dot(right, direction) * (1.0f - cos(turnAngle));
 		std::cout << "Up pressed... direction: " << direction << std::endl;
 	}
 	if (movementBools.keyTurnDown == true) {
 		Vec3 right = normalizeVec(cross(direction, vup));
-		direction = direction * cos(-0.01) + cross(right, direction) * sin(-0.01) + right * dot(right, direction) * (1.0f - cos(-0.01));
+		float turnAngle = -1 * TURN_SPEED * deltaTime;
+		direction = direction * cos(turnAngle) + cross(right, direction) * sin(turnAngle) + right * dot(right, direction) * (1.0f - cos(turnAngle));
 		std::cout << "Down pressed... direction: " << direction << std::endl;
 	}
 	if (movementBools.keyMoveUp == true) {
-		center = center + ((Vec3){0, 1, 0} * 0.1);
+		center = center + ((Vec3){0, 1, 0} * MOVE_SPEED * deltaTime);
 	}
 }

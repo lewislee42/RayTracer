@@ -42,7 +42,6 @@ MetalAdder::MetalAdder(CA::MetalLayer* metalLayer, const int& imageW, const int&
 	this->_objects = nullptr;
 	this->_bvhNodes = nullptr;
 	this->_objectsData = nullptr;
-    // TEMP
     this->_outputText = nullptr;
 }
 
@@ -61,7 +60,6 @@ void MetalAdder::sendComputeCommand(
     
     
 	MTL::CommandBuffer* commandBuffer = _mCommandQueue->commandBuffer();
-    // std::cout << "Command buffers address: " << commandBuffer << std::endl;
 
 	if (commandBuffer == nullptr) {
 		std::cerr << "Error: failed to create command buffer\n";
@@ -96,7 +94,6 @@ void MetalAdder::sendComputeCommand(
     
     // for blitting process
     MTL::CommandBuffer* commandBuffer1 = _mCommandQueue->commandBuffer();
-    // std::cout << "Command buffers address: " << commandBuffer << std::endl;
 
     if (commandBuffer1 == nullptr) {
         std::cerr << "Error: failed to create command buffer\n";
@@ -122,7 +119,7 @@ void MetalAdder::sendComputeCommand(
     
     commandBuffer1->presentDrawable(drawable);
     commandBuffer1->commit();
-//    commandBuffer1->waitUntilCompleted();
+    commandBuffer1->waitUntilCompleted();
 }
 
 // NOTE:: DOES NOT HANDLE FOOKING UPDATING OBJECTS YET
@@ -138,20 +135,21 @@ void MetalAdder::updateVariables(
         return;
     }
 	if (this->_metaData == nullptr) {
-	this->_metaData = this->_mDevice->newBuffer(sizeof(metaData), MTL::ResourceStorageModeShared);
+		this->_metaData = this->_mDevice->newBuffer(sizeof(metaData), MTL::ResourceStorageModeShared);
 	}
 	memcpy(this->_metaData->contents(), &metaData, sizeof(RaytracingMetaData));
+	
 	if (this->_objectsData == nullptr) {
 		this->_objectsData = this->_mDevice->newBuffer(sizeof(objectsData), MTL::ResourceStorageModeShared);
 	}
 	memcpy(this->_objectsData->contents(), &objectsData, sizeof(ObjectsData));
+	
     if (this->_objects == nullptr) {
 		this->_objects = this->_mDevice->newBuffer(sizeof(Object3D) * objectsData.objectAmount, MTL::ResourceStorageModeShared);
-//	}
 	memcpy(this->_objects->contents(), objects, sizeof(Object3D) * objectsData.objectAmount);}
+	
 	if (this->_bvhNodes == nullptr) {
 		this->_bvhNodes = this->_mDevice->newBuffer(sizeof(BVHNode) * objectsData.nodesCount, MTL::ResourceStorageModeShared);
-//	}
 	memcpy(this->_bvhNodes->contents(), bvhNodes, sizeof(BVHNode) * objectsData.nodesCount);}
     
     // temp

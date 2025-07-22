@@ -32,7 +32,7 @@ void	Split(std::vector<BVHNode> &allNodes, std::vector<Object3D> &allObjects, BV
 	}
 
 	node->childIndex = static_cast<int>(allNodes.size());
-	std::cout << "node childIndex: " << node->childIndex << std::endl;
+//	std::cout << "node childIndex: " << node->childIndex << std::endl;
 	BVHNode childA;
 	BVHNode childB;
 	childA.triangleIndex = node->triangleIndex;
