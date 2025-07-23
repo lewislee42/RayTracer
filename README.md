@@ -134,7 +134,8 @@ To play around with the color of the lights and the color of the Spheres head to
 - [x] Move Rendering onto the GPU
 - [x] Implement Direct Lighting
 - [x] Implement BVH
-- [ ] Implement ECS
+- [ ] Integrate ECS
+- [ ] Integrate Dear Imgui
 
 
 
